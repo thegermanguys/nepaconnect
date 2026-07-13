@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "picsum.photos" },
     ],
   },
-  eslint: { ignoreDuringBuilds: true },
+ // eslint: { ignoreDuringBuilds: true },
 };
 
 export default nextConfig;
