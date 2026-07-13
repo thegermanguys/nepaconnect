@@ -7,8 +7,8 @@ export const clubs: Club[] = [
     name: "Nepali Rhinos Cricket Club (NRCC) Berlin",
     citySlug: "berlin",
     categorySlug: "cricket",
-    logo: "https://picsum.photos/seed/gorkha-cc-logo/200/200",
-    coverImage: "https://picsum.photos/seed/gorkha-cc-cover/1200/600",
+    logo: "/images/nrcc-logo.jpg",
+    coverImage: "/images/nrcc-cf.jpg",
     description:
       "Berlin's oldest Nepali cricket club, founded in 2020. We play hard tennis ball and compete in different Cricket Leagues.",
     social: {
@@ -116,8 +116,8 @@ export const clubs: Club[] = [
     name: "Nepalese Stars NRW Cricket Team",
     citySlug: "cologne",
     categorySlug: "cricket",
-    logo: "https://picsum.photos/seed/rhine-cc-logo/200/200",
-    coverImage: "https://picsum.photos/seed/rhine-cc-cover/1200/600",
+    logo: "/images/nsnrw-logo.jpg",
+    coverImage: "/images/nsnrw-cf.jpg",
     description: "Friendly Tennis-ball cricket every other Sunday along the Rhine.",
     social: { facebook: "https://www.facebook.com/nsnrwct" },
     captainName: "Sagar Basnet",
