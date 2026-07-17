@@ -89,24 +89,24 @@ export const events: EventItem[] = [
     price: "€5",
     registerUrl: "https://example.com/register/career-cologne",
     status: "approved",
-  },
+  }, */
   {
-    id: "e6",
-    slug: "stuttgart-teej-celebration",
-    title: "Stuttgart Teej Celebration",
-    citySlug: "stuttgart",
-    organizer: "Stuttgart Nepali Mahila Samaj",
-    poster: "https://picsum.photos/seed/teej-stuttgart/900/1200",
-    location: "Gemeindehaus Bad Cannstatt, Stuttgart",
-    mapsUrl: "https://maps.google.com/?q=Gemeindehaus+Bad+Cannstatt",
-    startDate: "2026-09-01",
+    id: "e3",
+    slug: "berlin-teej-celebration",
+    title: "Teej Celebration 2026",
+    citySlug: "berlin",
+    organizer: "INAS Germany",
+    poster: "/images/inas-teej-26.jpg",
+    location: "Immanuelkirchstraße 1A, 10405 Berlin-Bezirk Pankow",
+    mapsUrl: "https://maps.app.goo.gl/vppRPCVrpnjzpqH27",
+    startDate: "2026-09-12",
     description: "Traditional dance, dar khane, and fasting-day rituals celebrated together.",
     category: "religious",
     festivalTag: "Teej",
-    price: "€8",
-    registerUrl: "https://example.com/register/teej-stuttgart",
+    price: "€",
+    registerUrl: "",
     status: "approved",
-  }, */
+  }, 
 ];
 
 export function getEventsByCity(citySlug: string) {

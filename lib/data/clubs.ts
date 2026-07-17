@@ -253,6 +253,26 @@ export const clubs: Club[] = [
     memberCount: 20,
     status: "approved",
   },
+  
+  {
+    id: "cl12",
+    slug: "inas-germany",
+    name: "INAS Germany",
+    citySlug: "berlin",
+    categorySlug: "cultural-organization",
+    logo: "/images/inas-logo.jpg",
+    coverImage: "/images/inas-teej-26.jpg",
+    description: "International Nepalese Artist Society(INAS) Germany.",
+    social: { facebook: "https://www.facebook.com/profile.php?id=100032367049600" },
+    phone: "",
+    email: "",
+    captainName: "",
+    practiceLocation: "",
+    practiceTime: "",
+    mapsUrl: "",
+    memberCount: 0,
+    status: "approved"
+  },
 ];
 
 export function getClubsByCity(citySlug: string) {
