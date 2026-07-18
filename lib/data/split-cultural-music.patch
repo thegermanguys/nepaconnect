@@ -1,0 +1,313 @@
+diff --git a/lib/data/clubs.ts b/lib/data/clubs.ts
+index 3b65e45..e72eebc 100644
+--- a/lib/data/clubs.ts
++++ b/lib/data/clubs.ts
+@@ -1,6 +1,12 @@
+ import type { Club } from "@/lib/types";
++import { culturalOrganizations } from "@/lib/data/cultural-organizations";
++import { musicGroups } from "@/lib/data/music-groups";
++
++// Sports clubs (cricket, football, etc). Cultural organizations and music
++// groups live in their own files and are merged in below, so every existing
++// import of `clubs`/`getClubsByCity`/etc. keeps working unchanged.
++export const sportsClubs: Club[] = [
+ 
+-export const clubs: Club[] = [
+   {
+     id: "cl1",
+     slug: "nrcc-berlin",
+@@ -253,28 +259,10 @@ export const clubs: Club[] = [
+     memberCount: 20,
+     status: "approved",
+   },
+-  
+-  {
+-    id: "cl12",
+-    slug: "inas-germany",
+-    name: "INAS Germany",
+-    citySlug: "berlin",
+-    categorySlug: "cultural-organization",
+-    logo: "/images/inas-logo.jpg",
+-    coverImage: "/images/inas-teej-26.jpg",
+-    description: "International Nepalese Artist Society(INAS) Germany.",
+-    social: { facebook: "https://www.facebook.com/profile.php?id=100032367049600" },
+-    phone: "",
+-    email: "",
+-    captainName: "",
+-    practiceLocation: "",
+-    practiceTime: "",
+-    mapsUrl: "",
+-    memberCount: 0,
+-    status: "approved"
+-  },
+ ];
+ 
++export const clubs: Club[] = [...sportsClubs, ...culturalOrganizations, ...musicGroups];
++
+ export function getClubsByCity(citySlug: string) {
+   return clubs.filter((c) => c.citySlug === citySlug);
+ }
+diff --git a/lib/data/cultural-organizations.ts b/lib/data/cultural-organizations.ts
+new file mode 100644
+index 0000000..1cc1f9b
+--- /dev/null
++++ b/lib/data/cultural-organizations.ts
+@@ -0,0 +1,91 @@
++import type { Club } from "@/lib/types";
++
++// Nepali cultural organizations, societies, and associations across Germany.
++// categorySlug is always "cultural-organizations" (must match lib/data/categories.ts).
++export const culturalOrganizations: Club[] = [
++  {
++    id: "cl12",
++    slug: "inas-germany",
++    name: "INAS Germany",
++    citySlug: "berlin",
++    categorySlug: "cultural-organizations",
++    logo: "/images/inas-logo.jpg",
++    coverImage: "/images/inas-teej-26.jpg",
++    description: "International Nepalese Artist Society(INAS) Germany.",
++    social: { facebook: "https://www.facebook.com/profile.php?id=100032367049600" },
++    phone: "",
++    email: "",
++    captainName: "",
++    practiceLocation: "",
++    practiceTime: "",
++    mapsUrl: "",
++    memberCount: 0,
++    status: "approved",
++  },
++  {
++    id: "cl13",
++    slug: "nedeg-berlin",
++    name: "Nepali-Deutsche Gesellschaft e.V. (NEDEG)",
++    citySlug: "berlin",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/nedeg-logo/200/200",
++    coverImage: "https://picsum.photos/seed/nedeg-cover/1200/600",
++    description:
++      "Founded in 1991, NEDEG is a non-profit society fostering cultural and social ties between Nepal and Germany through community events, newsletters, and member projects.",
++    social: { website: "https://www.nedeg.de" },
++    captainName: "",
++    phone: "",
++    email: "",
++    practiceLocation: "Eosanderstraße 13, 10587 Berlin",
++    practiceTime: "",
++    mapsUrl: "https://maps.google.com/?q=Eosanderstra%C3%9Fe+13+10587+Berlin",
++    memberCount: 0,
++    isFeatured: true,
++    status: "approved",
++  },
++  {
++    id: "cl14",
++    slug: "dng-cologne",
++    name: "Deutsch-Nepalische Gesellschaft e.V. (DNG)",
++    citySlug: "cologne",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/dng-logo/200/200",
++    coverImage: "https://picsum.photos/seed/dng-cover/1200/600",
++    description:
++      "A Cologne-based society dedicated to intercultural understanding between Germany and Nepal, best known for hosting the annual Nepaltag cultural festival.",
++    social: {
++      website: "https://www.deutsch-nepal.de",
++      facebook: "https://www.facebook.com/deutschnepal/",
++    },
++    captainName: "",
++    phone: "",
++    email: "info@deutsch-nepal.de",
++    practiceLocation: "Sedanstraße 35, Cologne",
++    practiceTime: "",
++    mapsUrl: "https://maps.google.com/?q=Sedanstra%C3%9Fe+35+Cologne",
++    memberCount: 0,
++    status: "approved",
++  },
++  {
++    id: "cl15",
++    slug: "nepali-samaj-frankfurt",
++    name: "Nepali Samaj e.V.",
++    citySlug: "frankfurt",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/nepalisamaj-logo/200/200",
++    coverImage: "https://picsum.photos/seed/nepalisamaj-cover/1200/600",
++    description:
++      "A registered social and cultural organisation for the Nepali community in Frankfurt am Main, organising gatherings, festivals, and mutual-support activities.",
++    social: { facebook: "https://www.facebook.com/samajnepali/" },
++    captainName: "",
++    phone: "",
++    email: "",
++    practiceLocation: "Frankfurt am Main",
++    practiceTime: "",
++    mapsUrl: "",
++    memberCount: 0,
++    status: "approved",
++  },
++
++  // Add new cultural organizations below this line, following the same shape.
++];
+diff --git a/lib/data/music-groups.ts b/lib/data/music-groups.ts
+new file mode 100644
+index 0000000..d6caf9e
+--- /dev/null
++++ b/lib/data/music-groups.ts
+@@ -0,0 +1,29 @@
++import type { Club } from "@/lib/types";
++
++// Nepali music, dohori, and dance groups across Germany.
++// categorySlug is always "music-groups" (must match lib/data/categories.ts).
++//
++// Empty for now — no verified, formally-named Nepali music/dance groups in
++// Germany were confirmed yet. Add entries below following the same shape as
++// lib/data/cultural-organizations.ts, e.g.:
++//
++// {
++//   id: "mg1",
++//   slug: "your-group-slug",
++//   name: "Group Name",
++//   citySlug: "city-slug",           // must exist in lib/data/cities.ts
++//   categorySlug: "music-groups",
++//   logo: "https://picsum.photos/seed/your-group-logo/200/200",
++//   coverImage: "https://picsum.photos/seed/your-group-cover/1200/600",
++//   description: "What the group does, genre, founding year, etc.",
++//   social: { facebook: "", instagram: "", website: "" },
++//   captainName: "",                 // leader/founder name, if any
++//   phone: "",
++//   email: "",
++//   practiceLocation: "",
++//   practiceTime: "",
++//   mapsUrl: "",
++//   memberCount: 0,
++//   status: "approved",
++// },
++export const musicGroups: Club[] = [];
+diff --git a/lib/data/cultural-organizations.ts b/lib/data/cultural-organizations.ts
+new file mode 100644
+index 0000000..1cc1f9b
+--- /dev/null
++++ b/lib/data/cultural-organizations.ts
+@@ -0,0 +1,91 @@
++import type { Club } from "@/lib/types";
++
++// Nepali cultural organizations, societies, and associations across Germany.
++// categorySlug is always "cultural-organizations" (must match lib/data/categories.ts).
++export const culturalOrganizations: Club[] = [
++  {
++    id: "cl12",
++    slug: "inas-germany",
++    name: "INAS Germany",
++    citySlug: "berlin",
++    categorySlug: "cultural-organizations",
++    logo: "/images/inas-logo.jpg",
++    coverImage: "/images/inas-teej-26.jpg",
++    description: "International Nepalese Artist Society(INAS) Germany.",
++    social: { facebook: "https://www.facebook.com/profile.php?id=100032367049600" },
++    phone: "",
++    email: "",
++    captainName: "",
++    practiceLocation: "",
++    practiceTime: "",
++    mapsUrl: "",
++    memberCount: 0,
++    status: "approved",
++  },
++  {
++    id: "cl13",
++    slug: "nedeg-berlin",
++    name: "Nepali-Deutsche Gesellschaft e.V. (NEDEG)",
++    citySlug: "berlin",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/nedeg-logo/200/200",
++    coverImage: "https://picsum.photos/seed/nedeg-cover/1200/600",
++    description:
++      "Founded in 1991, NEDEG is a non-profit society fostering cultural and social ties between Nepal and Germany through community events, newsletters, and member projects.",
++    social: { website: "https://www.nedeg.de" },
++    captainName: "",
++    phone: "",
++    email: "",
++    practiceLocation: "Eosanderstraße 13, 10587 Berlin",
++    practiceTime: "",
++    mapsUrl: "https://maps.google.com/?q=Eosanderstra%C3%9Fe+13+10587+Berlin",
++    memberCount: 0,
++    isFeatured: true,
++    status: "approved",
++  },
++  {
++    id: "cl14",
++    slug: "dng-cologne",
++    name: "Deutsch-Nepalische Gesellschaft e.V. (DNG)",
++    citySlug: "cologne",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/dng-logo/200/200",
++    coverImage: "https://picsum.photos/seed/dng-cover/1200/600",
++    description:
++      "A Cologne-based society dedicated to intercultural understanding between Germany and Nepal, best known for hosting the annual Nepaltag cultural festival.",
++    social: {
++      website: "https://www.deutsch-nepal.de",
++      facebook: "https://www.facebook.com/deutschnepal/",
++    },
++    captainName: "",
++    phone: "",
++    email: "info@deutsch-nepal.de",
++    practiceLocation: "Sedanstraße 35, Cologne",
++    practiceTime: "",
++    mapsUrl: "https://maps.google.com/?q=Sedanstra%C3%9Fe+35+Cologne",
++    memberCount: 0,
++    status: "approved",
++  },
++  {
++    id: "cl15",
++    slug: "nepali-samaj-frankfurt",
++    name: "Nepali Samaj e.V.",
++    citySlug: "frankfurt",
++    categorySlug: "cultural-organizations",
++    logo: "https://picsum.photos/seed/nepalisamaj-logo/200/200",
++    coverImage: "https://picsum.photos/seed/nepalisamaj-cover/1200/600",
++    description:
++      "A registered social and cultural organisation for the Nepali community in Frankfurt am Main, organising gatherings, festivals, and mutual-support activities.",
++    social: { facebook: "https://www.facebook.com/samajnepali/" },
++    captainName: "",
++    phone: "",
++    email: "",
++    practiceLocation: "Frankfurt am Main",
++    practiceTime: "",
++    mapsUrl: "",
++    memberCount: 0,
++    status: "approved",
++  },
++
++  // Add new cultural organizations below this line, following the same shape.
++];
+diff --git a/lib/data/music-groups.ts b/lib/data/music-groups.ts
+new file mode 100644
+index 0000000..d6caf9e
+--- /dev/null
++++ b/lib/data/music-groups.ts
+@@ -0,0 +1,29 @@
++import type { Club } from "@/lib/types";
++
++// Nepali music, dohori, and dance groups across Germany.
++// categorySlug is always "music-groups" (must match lib/data/categories.ts).
++//
++// Empty for now — no verified, formally-named Nepali music/dance groups in
++// Germany were confirmed yet. Add entries below following the same shape as
++// lib/data/cultural-organizations.ts, e.g.:
++//
++// {
++//   id: "mg1",
++//   slug: "your-group-slug",
++//   name: "Group Name",
++//   citySlug: "city-slug",           // must exist in lib/data/cities.ts
++//   categorySlug: "music-groups",
++//   logo: "https://picsum.photos/seed/your-group-logo/200/200",
++//   coverImage: "https://picsum.photos/seed/your-group-cover/1200/600",
++//   description: "What the group does, genre, founding year, etc.",
++//   social: { facebook: "", instagram: "", website: "" },
++//   captainName: "",                 // leader/founder name, if any
++//   phone: "",
++//   email: "",
++//   practiceLocation: "",
++//   practiceTime: "",
++//   mapsUrl: "",
++//   memberCount: 0,
++//   status: "approved",
++// },
++export const musicGroups: Club[] = [];
