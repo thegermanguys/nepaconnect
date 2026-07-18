@@ -101,7 +101,7 @@ export default function AdminPage() {
         <TabsContent value="clubs">
           <AdminTable
             columns={["Club/Group", "City", "Category", "Members", "Status"]}
-            rows={clubs.map((c) => [c.name, c.citySlug, c.categorySlug, c.memberCount, c.status])}
+            rows={clubs.map((c) => [c.name, c.citySlug, c.categorySlug, c.memberCount ?? "–", c.status])}
           />
         </TabsContent>
         <TabsContent value="restaurants">
