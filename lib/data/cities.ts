@@ -955,6 +955,20 @@ export const cities: City[] = [
   eventCount: 1,
   memberCount: 25,
 },
+{
+  id: "c69",
+  slug: "weingarten",
+  name: "Weingarten",
+  state: "Baden-Württemberg",
+  lat: 47.8082,
+  lng: 9.6404,
+  heroImage: "/images/cities/weingarten.jpg",
+  blurb: "A small town near Ravensburg with an active Nepali Cricket & football community.",
+  communityCount: 1,
+  businessCount: 0,
+  eventCount: 1,
+  memberCount: 20,
+},
 ];
 export function getCityBySlug(slug: string) {
   return cities.find((c) => c.slug === slug);
