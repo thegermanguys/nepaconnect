@@ -98,7 +98,7 @@ export const events: EventItem[] = [
     title: "SWAR Tour Berlin",
     citySlug: "berlin",
     organizer: "Shree Jamkabhet",
-    poster: "/images/swar-26.jpeg",
+    poster: "/images/swar-26.png",
     location: "U-BAHNHOF SCHLESISCHES TOR, 10997 BERLIN",
     mapsUrl: "https://maps.app.goo.gl/WKPAxUzFrQaBUa7N9",
     startDate: "2026-09-19",
