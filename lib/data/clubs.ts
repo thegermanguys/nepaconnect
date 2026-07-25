@@ -58,7 +58,7 @@ export const clubs: Club[] = [
     citySlug: "giessen",
     categorySlug: "cricket",
     logo: "/images/nct-logo.jpg",
-    coverImage: "/images/nct-cover.jpg",
+    coverImage: "/images/nct-cf.png",
     description: "Nepali cricket club based in Giessen.",
     social: {
       facebook: "",
