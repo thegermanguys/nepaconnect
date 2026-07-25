@@ -66,14 +66,71 @@ export const culturalOrganizations: Club[] = [
     logo: "https://picsum.photos/seed/nepalisamaj-logo/200/200",
     coverImage: "https://picsum.photos/seed/nepalisamaj-cover/1200/600",
     description:
-      "A registered social and cultural organisation for the Nepali community in Frankfurt am Main, organising gatherings, festivals, and mutual-support activities.",
-    social: { facebook: "https://www.facebook.com/samajnepali/" },
+      "Founded in 2003 in Darmstadt and based in Frankfurt am Main since 2007, promoting cultural and knowledge exchange between Nepal and Germany, sustainability, and mutual-support activities for the Rhein-Main Nepali community.",
+    social: { website: "https://nepalisamaj.org/", facebook: "https://www.facebook.com/samajnepali/" },
+    phone: "",
+    email: "",
+    mapsUrl: "",
+    contactPerson: "Shiva Adhikari (Chairman) & Bipin Shrestha (Deputy Chairman)",
+    status: "approved",
+  },
+  {
+    id: "cl104",
+    slug: "nepal-chautari-bayreuth",
+    name: "Nepal Chautari e.V.",
+    citySlug: "bayreuth",
+    categorySlug: "cultural-organizations",
+    logo: "https://picsum.photos/seed/nepalchautari-logo/200/200",
+    coverImage: "https://picsum.photos/seed/nepalchautari-cover/1200/600",
+    description:
+      "Promotes unity among the Nepali community in Bayreuth and preserves Nepali culture, language, and traditions, while supporting educational and healthcare initiatives for underprivileged children in Nepal.",
+    social: { website: "https://nepalchautari.org/" },
     phone: "",
     email: "",
     mapsUrl: "",
     contactPerson: "",
     status: "approved",
   },
+  {
+    id: "cl105",
+    slug: "nrna-germany",
+    name: "NRNA Germany (Non-Resident Nepali Association, NCC Germany)",
+    citySlug: "frankfurt",
+    categorySlug: "cultural-organizations",
+    logo: "https://picsum.photos/seed/nrnagermany-logo/200/200",
+    coverImage: "https://picsum.photos/seed/nrnagermany-cover/1200/600",
+    description:
+      "Established in 2003, NRNA Germany is the National Coordination Council for Germany within the global Non-Resident Nepali Association network, working on the diaspora's rights, welfare, and Nepal's socio-economic development. Serves the whole country, not just Frankfurt.",
+    social: { website: "https://www.nrnagermany.org/", facebook: "https://www.facebook.com/nrngermany/" },
+    phone: "",
+    email: "",
+    mapsUrl: "",
+    contactPerson: "",
+    status: "approved",
+  },
+ 
+  {
+    id: "cl106",
+    slug: "himalayan-pariwar-munich",
+    name: "Himalayan Pariwar Munich e.V.",
+    citySlug: "munich",
+    categorySlug: "cultural-organizations",
+    logo: "https://picsum.photos/seed/himalayanpariwar-logo/200/200",
+    coverImage: "https://picsum.photos/seed/himalayanpariwar-cover/1200/600",
+    description:
+      "Established in 2006 with 250+ active members, Himalayan Pariwar unites the Nepali diaspora in Munich through cultural festivals, humanitarian projects in Nepal, and a Nepali-language school (Nepali Pathshala) for children.",
+    social: {
+      website: "https://himalayanpariwar.org/",
+      facebook: "https://www.facebook.com/himalayan.pariwar/",
+      instagram: "https://www.instagram.com/himalayan_pariwar/",
+    },
+    phone: "+49 8953295613",
+    email: "info@himalayanpariwar.org",
+    mapsUrl: "",
+    contactPerson: "",
+    status: "approved",
+  },
+  
 
   // Add new cultural organizations below this line, following the same shape.
 ];
