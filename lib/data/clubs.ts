@@ -23,7 +23,7 @@ export const clubs: Club[] = [
     phone: "+49 ",
     email: "nrccberlin@gmail.com",
     practiceLocation: "Tempelhofer Feld, Berlin",
-    practiceTime: "Sundays, 09:00 – 13:00",
+    practiceTime: "Saturdays, 09:00 – 13:00",
     mapsUrl: "https://maps.google.com/?q=Tempelhofer+Feld+Berlin",
     memberCount: 34,
     isFeatured: true,
@@ -509,16 +509,18 @@ export const clubs: Club[] = [
   },
 ];
 
+export const clubs: Club[] = [...sportsClubs, ...culturalOrganizations, ...musicGroups];
+ 
 export function getClubsByCity(citySlug: string) {
   return clubs.filter((c) => c.citySlug === citySlug);
 }
-
+ 
 export function getClubsByCityAndCategory(citySlug: string, categorySlug: string) {
   return clubs.filter((c) => c.citySlug === citySlug && c.categorySlug === categorySlug);
 }
-
+ 
 export function getClubBySlug(slug: string) {
   return clubs.find((c) => c.slug === slug);
 }
-
+ 
 export const featuredClubs = clubs.filter((c) => c.isFeatured);
