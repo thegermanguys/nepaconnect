@@ -8,7 +8,7 @@ import { FestivalsSection } from "@/components/home/festivals";
 import { CtaSection } from "@/components/home/cta-section";
 
 export const metadata: Metadata = {
-  title: "The Home of Nepalis in Germany",
+  title: "The Home of Nepalese in Germany",
 };
 
 export default function HomePage() {

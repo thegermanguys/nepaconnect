@@ -77,6 +77,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} NepaConnect. Built by The German Guy, for the Nepalese community in Germany.</p>
           <div className="flex gap-4">
             <Link href="/submit" className="hover:text-foreground">Advertise</Link>
+            <a href= "https://www.facebook.com/awanish.srivastav.3" style="color:blue"> Connect Awanish to Advertise</a>
           </div>
         </div>
       </div>

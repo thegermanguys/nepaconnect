@@ -32,11 +32,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Nepali Connect Germany — The Home of Nepalis in Germany",
+    default: "Nepali Connect Germany — The Home of Nepalese in Germany",
     template: "%s · Nepali Connect Germany",
   },
   description:
-    "The largest online platform connecting Nepalis across Germany. Find sports clubs, communities, student associations, restaurants, jobs, housing, events, and more.",
+    "The largest online platform connecting Nepalese across Germany. Find sports clubs, communities, student associations, restaurants, jobs, housing, events, and more.",
   keywords: [
     "Nepali Germany",
     "Nepali community Germany",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Nepali Connect Germany",
-    description: "The Home of Nepalis in Germany.",
+    description: "The Home of Nepali in Germany.",
   },
   icons: { icon: "/favicon.ico" },
 };
