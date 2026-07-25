@@ -1,4 +1,6 @@
 import type { Club } from "@/lib/types";
+import { culturalOrganizations } from "@/lib/data/cultural-organizations";
+import { musicGroups } from "@/lib/data/music-groups";
 
 export const clubs: Club[] = [
   {
@@ -15,6 +17,7 @@ export const clubs: Club[] = [
       instagram: "https://www.instagram.com/nrccberlin/",
       facebook: "https://www.facebook.com/NRCCBerlin",
       whatsapp: "https://chat.whatsapp.com/KlpNaOPNahn0PWoTzG9SYN",
+      tiktok: "https://tiktok.com/@nrccberlin"
     },
     captainName: "Awanish Srivastava",
     phone: "+49 ",
