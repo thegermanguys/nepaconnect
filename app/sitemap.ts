@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { cities } from "@/lib/data/cities";
 import { restaurants } from "@/lib/data/restaurants";
 import { events } from "@/lib/data/events";
+import {  } from "@/lib/data/clubs";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/cities",
+    "/clubs",
     "/restaurants",
     "/events",
     "/map",
