@@ -38,7 +38,7 @@ export function Footer() {
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Mountain className="h-5 w-5" />
             </span>
-            Nepali Connect Germany
+            NepaConnect Germany
           </Link>
           <p className="mt-4 max-w-xs text-sm text-muted-foreground">
             The home of Nepalis in Germany — sports clubs, cultural groups, restaurants, and events, all in one place.
