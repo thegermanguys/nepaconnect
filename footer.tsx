@@ -77,6 +77,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} NepaConnect. Built by The German Guy, for the Nepalese community in Germany.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <Link href="/impressum" className="hover:text-foreground">Impressum</Link>
+          </div>
           <div className="flex gap-4">
             <Link href="/submit" className="hover:text-foreground">Advertise</Link>
           </div>
