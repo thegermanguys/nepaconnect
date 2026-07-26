@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mountain, Instagram, Facebook, Youtube } from "lucide-react";
+import { Mountain, Instagram, Facebook, Youtube, ExternalLink } from "lucide-react";
 
 const columns = [
   {
