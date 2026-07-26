@@ -29,7 +29,7 @@ export function Navbar() {
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Mountain className="h-5 w-5" />
             </span>
-            <span className="hidden sm:inline">Nepali Connect</span>
+            <span className="hidden sm:inline">NepaConnect</span>
             <span className="hidden sm:inline text-muted-foreground font-sans text-sm font-normal">Germany</span>
           </Link>
 

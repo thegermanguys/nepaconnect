@@ -976,15 +976,16 @@ export function getCityBySlug(slug: string) {
 
 export const featuredCities = cities.filter((c) => c.isFeatured);
 
-/*export const platformStats = {
+export const platformStats = {
   cities: 120,
   communities: 600,
   sportsClubs: 250,
   restaurants: 100,
-};*/
-export const platformStats = {
+};
+
+/*export const platformStats = {
   cities: cities.length,
   communities: clubs.length,
   restaurants: restaurants.length,
   members: cities.reduce((sum, city) => sum + city.memberCount, 0),
-};
+};*/

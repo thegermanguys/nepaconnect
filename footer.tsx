@@ -41,7 +41,7 @@ export function Footer() {
             NepaConnect Germany
           </Link>
           <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-            The home of Nepalis in Germany — sports clubs, cultural groups, restaurants, and events, all in one place.
+            The home of Nepalese in Germany — sports clubs, cultural groups, restaurants, and events, all in one place.
           </p>
           <div className="mt-5 flex gap-3">
             <a href="#" aria-label="Instagram" className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 hover:bg-primary hover:text-primary-foreground transition-colors">
