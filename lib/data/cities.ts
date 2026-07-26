@@ -981,6 +981,7 @@ export const platformStats = {
   communities: 600,
   sportsClubs: 250,
   restaurants: 100,
+  members: 5000,
 };
 
 /*export const platformStats = {
