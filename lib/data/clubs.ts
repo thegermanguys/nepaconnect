@@ -2,7 +2,7 @@ import type { Club } from "@/lib/types";
 import { culturalOrganizations } from "@/lib/data/cultural-organizations";
 import { musicGroups } from "@/lib/data/music-groups";
 
-export const clubs: Club[] = [
+export const sportsClubs: Club[] = [
   {
     id: "cl1",
     slug: "nrcc-berlin",
