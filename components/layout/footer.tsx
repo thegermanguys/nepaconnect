@@ -75,14 +75,15 @@ export function Footer() {
       </div>
       <div className="border-t border-border py-6">
         <div className="container flex flex-col items-center justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} NepaConnect. Built by The German Guy, for the Nepali community in Germany.</p>
+          <p>© {new Date().getFullYear()} NepaConnect. Built by The German Guy, for the Nepalese community in Germany.</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <Link href="/impressum" className="hover:text-foreground">Impressum</Link>
+          </div>
           <div className="flex gap-4">
             <Link href="/submit" className="hover:text-foreground">Advertise</Link>
           </div>
           <div className= "flex gap-4">
-            <Link href="https://www.facebook.com/awanish.srivastav.3" target="_blank" rel="noreferrer"
-            className="inline-flex items-center gap-1 font-medium text-primary underline underline-offset-4 hover:text-primary/80">
-            Connect Awanish to Advertise <ExternalLink className="h-3 w-3" /> </Link>
+            <Link href= "https://www.facebook.com/awanish.srivastav.3" className="hover:text-foreground"> Connect Awanish to Advertise</Link>
           </div>
         </div>
       </div>
