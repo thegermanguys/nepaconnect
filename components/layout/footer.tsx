@@ -79,6 +79,9 @@ export function Footer() {
           <div className="flex gap-4">
             <Link href="/submit" className="hover:text-foreground">Advertise</Link>
           </div>
+          <div className= "flex gap-4">
+            <Link href= "https://www.facebook.com/awanish.srivastav.3" className="hover:text-foreground"> Connect Awanish to Advertise</Link>
+          </div>
         </div>
       </div>
     </footer>

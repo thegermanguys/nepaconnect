@@ -8,7 +8,7 @@ export function CtaSection() {
       <div className="relative overflow-hidden rounded-3xl bg-hero-gradient px-8 py-16 text-center sm:px-16">
         <div aria-hidden className="prayer-flag-strip absolute inset-x-0 top-0" />
         <h2 className="mx-auto max-w-2xl text-balance font-display text-3xl font-semibold text-white sm:text-4xl">
-          Run a club, business, or association? Get discovered by thousands of Nepalis in Germany.
+          Run a club, business, or association? Get discovered by thousands of Nepalese in Germany.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-white/70">
           Listing is free and every submission is reviewed by our moderation team before going live.

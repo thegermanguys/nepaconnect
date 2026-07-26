@@ -32,7 +32,7 @@ export default function MapPage() {
       <div className="max-w-2xl">
         <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Map</span>
         <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          Nepalis across Germany
+          Nepalese across Germany
         </h1>
         <p className="mt-4 text-muted-foreground">
           Click a city on the map to see its communities, businesses, and events. This illustrative

@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     "NRN Germany",
   ],
   openGraph: {
-    title: "Nepali Connect Germany — The Home of Nepalis in Germany",
+    title: "Nepali Connect Germany — The Home of Nepalese in Germany",
     description:
       "Connect with sports clubs, student associations, businesses, events, jobs, housing, and communities across Germany.",
     url: siteUrl,

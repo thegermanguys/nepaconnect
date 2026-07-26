@@ -2,7 +2,7 @@
   "name": "nepali-connect-germany",
   "version": "0.1.0",
   "private": true,
-  "description": "The Home of Nepalis in Germany — the largest online platform connecting Nepalis across Germany.",
+  "description": "The Home of Nepalese in Germany — the largest online platform connecting Nepalese across Germany.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

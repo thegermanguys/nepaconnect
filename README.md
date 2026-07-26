@@ -1,8 +1,8 @@
 # Nepali Connect Germany 🇳🇵🇩🇪
 
-**The Home of Nepalis in Germany.**
+**The Home of Nepalese in Germany.**
 
-The largest online platform connecting Nepalis across Germany — sports clubs, communities,
+The largest online platform connecting Nepalese across Germany — sports clubs, communities,
 student associations, restaurants, grocery stores, jobs, housing, events, lawyers, and doctors,
 all in one place.
 
