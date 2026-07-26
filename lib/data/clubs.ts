@@ -509,7 +509,7 @@ export const clubs: Club[] = [
   },
 ];
 
-//export const clubs: Club[] = [...sportsClubs, ...culturalOrganizations, ...musicGroups];
+export const clubs: Club[] = [...sportsClubs, ...culturalOrganizations, ...musicGroups];
  
 export function getClubsByCity(citySlug: string) {
   return clubs.filter((c) => c.citySlug === citySlug);
