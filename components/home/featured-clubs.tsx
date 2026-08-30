@@ -1,8 +1,9 @@
 import { SectionHeader } from "@/components/shared/section-header";
 import { ClubCard } from "@/components/shared/club-card";
-import { featuredClubs } from "@/lib/data/clubs";
+import { getFeaturedClubs } from "@/lib/data/clubs";
 
-export function FeaturedClubsSection() {
+export async function FeaturedClubsSection() {
+  const featuredClubs = await getFeaturedClubs();
   return (
     <section className="container py-20">
       <SectionHeader

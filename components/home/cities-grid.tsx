@@ -1,8 +1,9 @@
 import { SectionHeader } from "@/components/shared/section-header";
 import { CityCard } from "@/components/shared/city-card";
-import { cities } from "@/lib/data/cities";
+import { getCities } from "@/lib/data/cities";
 
-export function CitiesGrid() {
+export async function CitiesGrid() {
+  const cities = await getCities();
   return (
     <section className="bg-surface-2/60 py-20">
       <div className="container">

@@ -1,10 +1,11 @@
 import { SectionHeader } from "@/components/shared/section-header";
 import { CategoryCard } from "@/components/shared/category-card";
-import { categories } from "@/lib/data/categories";
+import { getCategories } from "@/lib/data/categories";
 
 const CLUB_GROUPS = new Set(["sports", "community"]);
 
-export function CategoriesGrid() {
+export async function CategoriesGrid() {
+  const categories = await getCategories();
   return (
     <section className="container py-20">
       <SectionHeader

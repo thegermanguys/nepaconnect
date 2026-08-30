@@ -1,8 +1,9 @@
 import { SectionHeader } from "@/components/shared/section-header";
 import { EventCard } from "@/components/shared/event-card";
-import { events } from "@/lib/data/events";
+import { getEvents } from "@/lib/data/events";
 
-export function FestivalsSection() {
+export async function FestivalsSection() {
+  const events = await getEvents();
   const upcoming = [...events].sort(
     (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
   );
