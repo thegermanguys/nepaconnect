@@ -1,156 +1,121 @@
+import { createClient } from "@/lib/supabase/server";
 import type { EventItem } from "@/lib/types";
 
-export const events: EventItem[] = [
-  {
-    id: "e1",
-    slug: "chandra-surya",
-    title: "Chandra Surya Cup 2.0",
-    citySlug: "soest",
-    organizer: "Nepalese Stars NRW Cricket Team",
-    poster: "/images/chandra-surya.png",
-    location: "Geschwister-scholl-straße 1-2, 59494 Soest",
-    mapsUrl: "https://maps.app.goo.gl/NuiZwE14TR4Vxsyo7",
-    startDate: "2026-07-19",
-    endDate: "2026-07-19",
-    description: "The Chandra Surya Cup rise again in Soest — battle of 8 cricket teams from Germany.",
-    category: "sports",
-    festivalTag: "Cricket",
-    price: "0",
-    registerUrl: "https://www.facebook.com/profile.php?id=61587741186201",
-    isFeatured: true,
-    status: "approved",
-  },
-  {
-    id: "e2",
-    slug: "nrna-football-26",
-    title: "9th NRNA Cup Stuttgart 2026",
-    citySlug: "stuttgart",
-    organizer: "NFC Stuttgart",
-    poster: "/images/nrna-football-2026.jpg",
-    location: "SV Leonberg/Eltingen e.V.",
-    mapsUrl: "https://maps.app.goo.gl/CCqaNNVbfYSaitsT7",
-    startDate: "2026-09-05",
-    endDate: "2026-09-05",
-    description: "A symbol of unity. A passion for football.",
-    category: "sports",
-    festivalTag: "Football",
-    price: "0",
-    registerUrl: "https://www.facebook.com/nfcstuttgart",
-    isFeatured: true,
-    status: "approved",
-  },
-   {
-    id: "e3",
-    slug: "berlin-teej-celebration",
-    title: "Teej Celebration 2026",
-    citySlug: "berlin",
-    organizer: "INAS Germany",
-    poster: "/images/inas-teej-26.jpg",
-    location: "Immanuelkirchstraße 1A, 10405 Berlin-Bezirk Pankow",
-    mapsUrl: "https://maps.app.goo.gl/vppRPCVrpnjzpqH27",
-    startDate: "2026-09-12",
-    description: "Traditional dance, dar khane, and fasting-day rituals celebrated together.",
-    category: "religious",
-    festivalTag: "Teej",
-    price: "€",
-    registerUrl: "",
-    status: "approved",
-  }, 
-  {
-    id: "e4",
-    slug: "gtct-2026",
-    title: "Gänseliesel TCT 2026 - Tennis Cricket Tournament",
-    citySlug: "göttingen",
-    organizer: "Goettingen Nepalese Society Cricket Club - GNSCC",
-    poster: "/images/gtct-banner.jpeg",
-    location: "Göttingen Uni Sportzentrum",
-    mapsUrl: "https://maps.app.goo.gl/kifuDSjJWqoyopTCA",
-    startDate: "2026-08-15",
-    endDate: "2026-08-15",
-    description: "Gänseliesel TCT 2026 is coming on 15 August 2026.",
-    category: "sports",
-    festivalTag: "Cricket",
-    price: "0",
-    registerUrl: "https://www.facebook.com/profile.php?id=61587741186201",
-    isFeatured: true,
-    status: "approved",
-  },
-  {
-    id: "e5",
-    slug: "nabin-2026",
-    title: "Nabin K Bhattarai & Atripta Band Berlin Concert 2026",
-    citySlug: "berlin",
-    organizer: "Kalakriti",
-    poster: "/images/kalakriti-26.jpeg",
-    location: "Musikbrauerei, Berlin",
-    mapsUrl: "https://maps.app.goo.gl/sKbEVtsDnbeWdkDr8",
-    startDate: "2026-08-28",
-    description: "Nabin K. Bhattarai & Atripta Band are coming to Berlin! 🎟️ Early Bird Tickets are now LIVE!",
-    category: "concert",
-    festivalTag: "Music",
-    price: "Early bird: €40",
-    registerUrl: "https://hamroevents.com/events/nabin-k-bhattarai-live-in-berlin-germany",
-    status: "approved",
-  }, 
-  {
-    id: "e6",
-    slug: "swar-2026",
-    title: "SWAR Tour Berlin",
-    citySlug: "berlin",
-    organizer: "Shree Jamkabhet",
-    poster: "/images/swar-26.png",
-    location: "U-BAHNHOF SCHLESISCHES TOR, 10997 BERLIN",
-    mapsUrl: "https://maps.app.goo.gl/WKPAxUzFrQaBUa7N9",
-    startDate: "2026-09-19",
-    description: "SWAR tour by eye peppers in Berlin! 🎟️ Buy your Tickets now",
-    category: "concert",
-    festivalTag: "Music",
-    price: "Early bird: €",
-    registerUrl: "",
-    status: "approved",
-  },
-  /*{
-    id: "e4",
-    slug: "berlin-cricket-premier-league-final",
-    title: "Berlin Cricket Premier League — Final",
-    citySlug: "berlin",
-    organizer: "Berlin Nepali Cricket Federation",
-    poster: "https://picsum.photos/seed/cricket-final-berlin/900/1200",
-    location: "Tempelhofer Feld, Berlin",
-    mapsUrl: "https://maps.google.com/?q=Tempelhofer+Feld",
-    startDate: "2026-08-30",
-    description: "Season finale between six clubs — trophy presentation and community bhoj afterwards.",
-    category: "sports",
-    price: "Free entry",
-    registerUrl: "https://example.com/register/bcpl-final",
-    status: "approved",
-  },
-  {
-    id: "e5",
-    slug: "cologne-career-networking-night",
-    title: "Cologne Nepali Career Networking Night",
-    citySlug: "cologne",
-    organizer: "Nepali Professionals Network Germany",
-    poster: "https://picsum.photos/seed/career-cologne/900/1200",
-    location: "IHK Köln, Cologne",
-    mapsUrl: "https://maps.google.com/?q=IHK+Koeln",
-    startDate: "2026-09-05",
-    description: "Meet Nepali professionals across engineering, IT, and finance in the Rhineland.",
-    category: "networking",
-    price: "€5",
-    registerUrl: "https://example.com/register/career-cologne",
-    status: "approved",
-  }, */
-];
+export interface EventRow {
+  id: string;
+  slug: string;
+  title: string;
+  city_slug: string;
+  organizer: string | null;
+  poster: string | null;
+  location: string | null;
+  maps_url: string | null;
+  start_date: string;
+  end_date: string | null;
+  description: string | null;
+  category: EventItem["category"];
+  festival_tag: EventItem["festivalTag"] | null;
+  price: string | null;
+  register_url: string | null;
+  is_featured: boolean;
+  status: "pending" | "approved" | "rejected";
+}
 
-export function getEventsByCity(citySlug: string) {
-  return events.filter((e) => e.citySlug === citySlug);
+export function mapEvent(row: EventRow): EventItem {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    citySlug: row.city_slug,
+    organizer: row.organizer ?? "",
+    poster: row.poster ?? "",
+    location: row.location ?? "",
+    mapsUrl: row.maps_url ?? "",
+    startDate: row.start_date,
+    endDate: row.end_date ?? undefined,
+    description: row.description ?? "",
+    category: row.category,
+    festivalTag: row.festival_tag ?? undefined,
+    price: row.price ?? "",
+    registerUrl: row.register_url ?? "",
+    isFeatured: row.is_featured,
+    status: row.status,
+  };
 }
-export function getEventBySlug(slug: string) {
-  return events.find((e) => e.slug === slug);
+
+export async function getEvents(): Promise<EventItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "approved")
+    .order("start_date");
+  if (error) {
+    console.error("getEvents:", error.message);
+    return [];
+  }
+  return (data as EventRow[]).map(mapEvent);
 }
-export const featuredEvents = events.filter((e) => e.isFeatured);
-export const festivalEvents = events.filter((e) => e.festivalTag);
+
+export async function getEventsByCity(citySlug: string): Promise<EventItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "approved")
+    .eq("city_slug", citySlug)
+    .order("start_date");
+  if (error) {
+    console.error("getEventsByCity:", error.message);
+    return [];
+  }
+  return (data as EventRow[]).map(mapEvent);
+}
+
+export async function getEventBySlug(slug: string): Promise<EventItem | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .maybeSingle();
+  if (error || !data) return null;
+  return mapEvent(data as EventRow);
+}
+
+export async function getFeaturedEvents(): Promise<EventItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "approved")
+    .eq("is_featured", true)
+    .order("start_date");
+  if (error) {
+    console.error("getFeaturedEvents:", error.message);
+    return [];
+  }
+  return (data as EventRow[]).map(mapEvent);
+}
+
+export async function getFestivalEvents(): Promise<EventItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "approved")
+    .not("festival_tag", "is", null)
+    .order("start_date");
+  if (error) {
+    console.error("getFestivalEvents:", error.message);
+    return [];
+  }
+  return (data as EventRow[]).map(mapEvent);
+}
+
+// --- Pure date-math helpers — no DB access, operate on whatever list of
+// events you already fetched. ------------------------------------------
 
 export function isPastEvent(event: EventItem, now: Date = new Date()): boolean {
   const referenceDate = new Date(event.endDate ?? event.startDate);
@@ -159,13 +124,13 @@ export function isPastEvent(event: EventItem, now: Date = new Date()): boolean {
   return referenceDate.getTime() < now.getTime();
 }
 
-export function getUpcomingEvents(list: EventItem[] = events, now: Date = new Date()): EventItem[] {
+export function getUpcomingEvents(list: EventItem[], now: Date = new Date()): EventItem[] {
   return list
     .filter((e) => !isPastEvent(e, now))
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 }
 
-export function getPastEvents(list: EventItem[] = events, now: Date = new Date()): EventItem[] {
+export function getPastEvents(list: EventItem[], now: Date = new Date()): EventItem[] {
   return list
     .filter((e) => isPastEvent(e, now))
     .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());

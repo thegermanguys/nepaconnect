@@ -1,526 +1,121 @@
-import type { Club } from "@/lib/types";
-import { culturalOrganizations } from "@/lib/data/cultural-organizations";
-import { musicGroups } from "@/lib/data/music-groups";
+import { createClient } from "@/lib/supabase/server";
+import type { Club, SocialLinks } from "@/lib/types";
 
-export const sportsClubs: Club[] = [
-  {
-    id: "cl1",
-    slug: "nrcc-berlin",
-    name: "Nepali Rhinos Cricket Club (NRCC) Berlin",
-    citySlug: "berlin",
-    categorySlug: "cricket",
-    logo: "/images/nrcc-logo.png",
-    coverImage: "/images/nrcc-cf.jpg",
-    description:
-      "Berlin's oldest Nepali cricket club, founded in 2020. We play hard tennis ball and compete in different Cricket Leagues.",
-    social: {
-      instagram: "https://www.instagram.com/nrccberlin/",
-      facebook: "https://www.facebook.com/NRCCBerlin",
-      whatsapp: "https://chat.whatsapp.com/KlpNaOPNahn0PWoTzG9SYN",
-      tiktok: "https://tiktok.com/@nrccberlin"
-    },
-    captainName: "Awanish Srivastava",
-    phone: "+49 ",
-    email: "nrccberlin@gmail.com",
-    practiceLocation: "Tempelhofer Feld, Berlin",
-    practiceTime: "Saturdays, 09:00 – 13:00",
-    mapsUrl: "https://maps.google.com/?q=Tempelhofer+Feld+Berlin",
-    memberCount: 34,
-    isFeatured: true,
-    status: "approved",
-  },
-  {
-    id: "cl2",
-    slug: "ndcc-darmstadt",
-    name: "Nepal Darmstadt Cricket Club (NDCC)",
-    citySlug: "darmstadt",
-    categorySlug: "cricket",
-    logo: "/images/ndcc-logo.jpg",
-    coverImage: "/images/ndcc-cf.jpg",
-    description: "Active Nepali cricket club representing Darmstadt.",
-    social: {
-      facebook: "https://www.facebook.com/profile.php?id=100050318333155",
-      instagram: "",
-      whatsapp: "",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Darmstadt",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 30,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl3",
-    slug: "nct-giessen",
-    name: "Nepali Cricket Team (NCT) Giessen",
-    citySlug: "giessen",
-    categorySlug: "cricket",
-    logo: "/images/nct-logo.jpg",
-    coverImage: "/images/nct-cf.png",
-    description: "Nepali cricket club based in Giessen.",
-    social: {
-      facebook: "",
-      instagram: "",
-      whatsapp: "",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Giessen",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 28,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl4",
-    slug: "nsk-hamburg",
-    name: "Nepal Sport und Kulturverein",
-    citySlug: "hamburg",
-    categorySlug: "cricket",
-    logo: "/images/nsk-logo.jpg",
-    coverImage: "/images/nsk-cf.jpg",
-    description: "Nepali community cricket club in Hamburg.",
-    social: {
-      facebook: "https://www.facebook.com/profile.php?id=61585555912628",
-      instagram: "",
-      whatsapp: "",
-    },
-    captainName: "",
-    phone: "",
-    email: "nsca.ev@gmail.com",
-    practiceLocation: "Hamburg",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 25,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl5",
-    slug: "bne-munich",
-    name: "Bayern Nepali Eagles (BNE)",
-    citySlug: "munich",
-    categorySlug: "cricket",
-    logo: "/images/bne-logo.jpg",
-    coverImage: "/images/bne-cf.jpg",
-    description: "Competitive Nepali cricket club based in Munich.",
-    social: {
-      facebook: "https://www.facebook.com/profile.php?id=61576480031066",
-      instagram: "",
-      whatsapp: "",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Munich",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 30,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl6",
-    slug: "twxi-weingarten",
-    name: "Team Weingarten XI",
-    citySlug: "weingarten",
-    categorySlug: "cricket",
-    logo: "/images/twxi-logo.png",
-    coverImage: "/images/twxi-cover.jpg",
-    description: "Nepali cricket club from Weingarten.",
-    social: { facebook: "", instagram: "", whatsapp: "" },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Weingarten",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 20,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl7",
-    slug: "nhc-mannheim",
-    name: "Nepalheim Sports Club",
-    citySlug: "mannheim",
-    categorySlug: "cricket",
-    logo: "/images/nsc-logo.jpg",
-    coverImage: "/images/nsc-cf.jpg",
-    description: "Nepali cricket club representing Mannheim.",
-    social: { facebook: "https://www.facebook.com/profile.php?id=61589379656790", instagram: "https://www.instagram.com/nepalheim_sc", whatsapp: "" },
-    captainName: "",
-    phone: "",
-    email: "nepalheim2025@gmail.com",
-    practiceLocation: "Mannheim",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 22,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl8",
-    slug: "nfct-nurnberg",
-    name: "Nepal Franconian Cricket Team - NFCT",
-    citySlug: "nurnberg",
-    categorySlug: "cricket",
-    logo: "/images/nfct-logo.jpg",
-    coverImage: "/images/nfct-cf.jpg",
-    description: "The heartbeat of Nepalese cricket in Nürnberg. More than teammates—we are a legacy in the making.",
-    social: { facebook: "https://www.facebook.com/profile.php?id=61576405448212", instagram: "", whatsapp: "" },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Nürnberg",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 24,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl9",
-    slug: "gnscc-gottingen",
-    name: "Goettingen Nepalese Society Cricket Club - GNSCC",
-    citySlug: "gottingen",
-    categorySlug: "cricket",
-    logo: "/images/gnscc-logo.jpg",
-    coverImage: "/images/gnscc-cf.jpg",
-    description: "Nepali cricket club from Göttingen.",
-    social: { facebook: "https://www.facebook.com/profile.php?id=61587741186201", instagram: "", whatsapp: "" },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Göttingen",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 20,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl10",
-    slug: "fcberlin",
-    name: "FC Berlin NEPAL e.V",
-    citySlug: "berlin",
-    categorySlug: "football",
-    logo: "/images/fcberlin-logo.jpg",
-    coverImage: "https://picsum.photos/seed/yeti-fc-cover/1200/600",
-    description:
-      "A 5-a-side football club for Nepali students and workers in Berlin. All skill levels welcome.",
-    social: {
-      instagram: "https://www.instagram.com/fcberlinnepal",
-      facebook: "https://www.facebook.com/fcberlinnepal",
-    },
-    captainName: "Sandip Silwal",
-    phone: "+49 176 81372594",
-    email: "fcberlinnepal@gmail.com",
-    practiceLocation: "Spandau, Berlin",
-    practiceTime: "Wednesdays, 09:00 – 13:00",
-    mapsUrl: "https://maps.app.goo.gl/jz37AohyLq6jLMqEA",
-    memberCount: 25,
-    isFeatured: false,
-    status: "approved",
-  },
-
-  {
-    id: "cl11",
-    slug: "nsnrw-cricket-club",
-    name: "Nepalese Stars NRW Cricket Team",
-    citySlug: "cologne",
-    categorySlug: "cricket",
-    logo: "/images/nsnrw-logo.jpg",
-    coverImage: "/images/nsnrw-cf.jpg",
-    description: "Friendly Tennis-ball cricket every other Sunday along the Rhine.",
-    social: { facebook: "https://www.facebook.com/nsnrwct" },
-    captainName: "Sagar Basnet",
-    phone: "015739592492",
-    email: "rhinecc@cologne.de",
-    practiceLocation: "Poller Wiesen, Cologne",
-    practiceTime: "Alternate Sundays, 11:00 – 14:00",
-    mapsUrl: "https://maps.google.com/?q=Poller+Wiesen+Cologne",
-    memberCount: 20,
-    isFeatured: false,
-    status: "approved",
-  },
-  
-  {
-    id: "cl16",
-    slug: "nepalese-stars-nrw",
-    name: "Nepalese Stars NRW e.V.",
-    citySlug: "essen",
-    categorySlug: "football",
-    logo: "/images/nsnrw-logo.jpg",
-    coverImage: "https://picsum.photos/seed/nepalese-stars-nrw-cover/1200/600",
-    description:
-      "A Nepali football club representing the community in North Rhine-Westphalia, regularly competing in the NRNA Cup and Nepali Bundespokal tournaments.",
-    social: {
-      facebook: "https://www.facebook.com/NepaleseStarsNRW",
-      instagram: "https://www.instagram.com/nepalese_stars_nrw",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl17",
-    slug: "nft-munich",
-    name: "NFT Munich",
-    citySlug: "munich",
-    categorySlug: "football",
-    logo: "/images/nft-munich-logo.jpg",
-    coverImage: "/images/nft-munich-cf.jpg",
-    description:
-      "Founded in 2014, NFT Munich is one of the most established Nepali football clubs in Germany, uniting players through sport, integration, and community spirit.",
-    social: { website: "https://www.nftmunich.club", facebook: "https://www.instagram.com/nft_munich", instagram: "https://www.instagram.com/nft_munich" },
-    captainName: "",
-    phone: "",
-    email: "nftmunich@gmail.com",
-    practiceLocation: "",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl18",
-    slug: "nft-weingarten",
-    name: "NFT Weingarten",
-    citySlug: "weingarten",
-    categorySlug: "football",
-    logo: "/images/nftw-logo.jpg",
-    coverImage: "/images/nftw-cf.jpg",
-    description:
-      "A Nepali football club from Weingarten, competing against other Nepali clubs across southern Germany.",
-    social: { facebook: "https://www.facebook.com/NFT.weingarten", instagram: "https://www.instagram.com/nft.weingarten"},
-    captainName: "",
-    phone: "",
-    email: "nftweingarten@gmail.com",
-    practiceLocation: "Weingarten",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl19",
-    slug: "everest-fc-heidelberg",
-    name: "Everest FC Heidelberg",
-    citySlug: "heidelberg",
-    categorySlug: "football",
-    logo: "/images/efch-logo.jpg",
-    coverImage: "/images/efch-cf.jpg",
-    description:
-      "A Nepali football club based in Heidelberg, playing friendly matches against other Nepali community teams across Germany.",
-    social: { facebook: "https://www.facebook.com/profile.php?id=61552626110974", instagram: "https://www.instagram.com/everestfcheidelberg" },
-    captainName: "",
-    phone: "0179 7328769",
-    email: "",
-    practiceLocation: "",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl20",
-    slug: "nfc-nurnberg",
-    name: "NFC Nürnberg",
-    citySlug: "nuremberg",
-    categorySlug: "football",
-    logo: "/images/nfcn-logo.jpg",
-    coverImage: "/images/nfcn-cf.jpg",
-    description: "A Nepali football club representing the community in Nuremberg.",
-    social: {facebook: "https://www.facebook.com/profile.php?id=61579214525163", instagram: "https://www.instagram.com/nfcnbg"},
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl21",
-    slug: "eintracht-nepali-frankfurt",
-    name: "Eintracht Nepali e.V.",
-    citySlug: "frankfurt",
-    categorySlug: "football",
-    logo: "/images/enf-logo.jpg",
-    coverImage: "/images/enf-cf.jpg",
-    description:
-      "Founded by young Nepali brothers in Frankfurt to unite the community through football. Won the men's title at the 2025 Nepali Bundespokal.",
-    social: {
-      website: "https://www.eintrachtnepali.com",
-      facebook: "https://www.facebook.com/eintrachtnepali/",
-      instagram: "https://www.instagram.com/eintracht_nepali_fc/",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Frankfurt am Main",
-    practiceTime: "Saturdays, 08:00 – 11:00",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl22",
-    slug: "nfc-stuttgart",
-    name: "NFC Stuttgart",
-    citySlug: "stuttgart",
-    categorySlug: "football",
-    logo: "/images/nfc-stuttgart-logo.jpg",
-    coverImage: "/images/nfc-stuttgart-cf.jpg",
-    description:
-      "Founded on 20 February 2022, NFC Stuttgart is a non-profit football club run by the Nepali community in Stuttgart. Runner-up at the 2025 Nepali Bundespokal.",
-    social: {
-      website: "https://nfcstuttgart.de",
-      facebook: "https://www.facebook.com/nfcstuttgart/",
-    },
-    captainName: "",
-    phone: "",
-    email: "nfcstuttgart@gmail.com",
-    practiceLocation: "Stuttgart",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl23",
-    slug: "nfc-hamburg",
-    name: "Nepalese Football Club Hamburg (NFCH) e.V.",
-    citySlug: "hamburg",
-    categorySlug: "football",
-    logo: "/images/nfch-logo.jpg",
-    coverImage: "/images/nfch-cf.jpg",
-    description:
-      "Established in 2016, NFCH unites Nepalese youths studying or working in Hamburg through football and cultural events. Won the women's title at the 2025 Nepali Bundespokal.",
-    social: { website: "https://nfchhamburg.com", facebook: "https://www.facebook.com/nfchh", instagram: "https://www.instagram.com/nfch_2016"},
-    captainName: "",
-    phone: "01520 8738547",
-    email: "nfch2016@gmail.com",
-    practiceLocation: "FTSV Lorbeer, Marckmannstraße 125, 20539 Hamburg",
-    practiceTime: "Wednesdays 18:00 – 20:00, Saturdays 09:00 – 11:30",
-    mapsUrl: "https://maps.google.com/?q=Marckmannstra%C3%9Fe+125+20539+Hamburg",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl24",
-    slug: "nepal-darmstadt-fc",
-    name: "Nepal Darmstadt FC",
-    citySlug: "darmstadt",
-    categorySlug: "football",
-    logo: "/images/ndfc-logo.jpg",
-    coverImage: "/images/ndfc-cf.jpg",
-    description:
-      "A Nepali football club based in Darmstadt. Runner-up in the men's final at the 2025 Nepali Bundespokal.",
-    social: {
-      website: "https://nepaldarmstadtfc.wixsite.com/home",
-      facebook: "https://www.facebook.com/nepaldarmstadtfc/",
-      instagram: "https://www.instagram.com/ndfc2014/",
-    },
-    captainName: "",
-    phone: "",
-    email: "",
-    practiceLocation: "Darmstadt",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl25",
-    slug: "nfc-bonn",
-    name: "NFC Bonn",
-    citySlug: "bonn",
-    categorySlug: "football",
-    logo: "/images/nfcb-logo.jpg",
-    coverImage: "/images/nfcb-cf.jpg",
-    description:
-      "Nepalese Football Club Bonn, officially registered as an e.V. in December 2025, uniting the Nepali community in Bonn through football.",
-    social: {
-      facebook: "https://www.facebook.com/nfcbonn",
-      instagram: "https://www.instagram.com/nfcbonn/",
-    },
-    captainName: "",
-    phone: "+49 176 43642550",
-    email: "nfcbonn@gmail.com",
-    practiceLocation: "Wasserland 14, Bonn",
-    practiceTime: "",
-    mapsUrl: "https://maps.google.com/?q=Wasserland+14+Bonn",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-  {
-    id: "cl26",
-    slug: "nsc-köln",
-    name: "NSC Köln",
-    citySlug: "cologne",
-    categorySlug: "football",
-    logo: "/images/nsck-logo.jpg",
-    coverImage: "",
-    description:
-      "Nepalese Football Club Köln, based in Köln, our club is created to bring together the Nepalese community through sports.",
-    social: {
-      facebook: "https://www.facebook.com/profile.php?id=61591846327136",
-    },
-    captainName: "",
-    phone: "",
-    email: "nsc.koeln@gmail.com",
-    practiceLocation: "",
-    practiceTime: "",
-    mapsUrl: "",
-    memberCount: 0,
-    isFeatured: false,
-    status: "approved",
-  },
-];
-
-export const clubs: Club[] = [...sportsClubs, ...culturalOrganizations, ...musicGroups];
- 
-export function getClubsByCity(citySlug: string) {
-  return clubs.filter((c) => c.citySlug === citySlug);
+export interface ClubRow {
+  id: string;
+  slug: string;
+  name: string;
+  city_slug: string;
+  category_slug: string;
+  logo: string | null;
+  cover_image: string | null;
+  description: string | null;
+  social: SocialLinks | null;
+  phone: string | null;
+  email: string | null;
+  maps_url: string | null;
+  is_featured: boolean;
+  status: "pending" | "approved" | "rejected";
+  captain_name: string | null;
+  practice_location: string | null;
+  practice_time: string | null;
+  member_count: number | null;
+  contact_person: string | null;
 }
- 
-export function getClubsByCityAndCategory(citySlug: string, categorySlug: string) {
-  return clubs.filter((c) => c.citySlug === citySlug && c.categorySlug === categorySlug);
+
+export function mapClub(row: ClubRow): Club {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    citySlug: row.city_slug,
+    categorySlug: row.category_slug,
+    logo: row.logo ?? "",
+    coverImage: row.cover_image ?? "",
+    description: row.description ?? "",
+    social: row.social ?? {},
+    phone: row.phone ?? "",
+    email: row.email ?? "",
+    mapsUrl: row.maps_url ?? "",
+    isFeatured: row.is_featured,
+    status: row.status,
+    captainName: row.captain_name ?? "",
+    practiceLocation: row.practice_location ?? "",
+    practiceTime: row.practice_time ?? "",
+    memberCount: row.member_count ?? 0,
+    contactPerson: row.contact_person ?? "",
+  };
 }
- 
-export function getClubBySlug(slug: string) {
-  return clubs.find((c) => c.slug === slug);
+
+/** Every approved club, cultural organization, and music group. */
+export async function getClubs(): Promise<Club[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("*")
+    .eq("status", "approved")
+    .order("name");
+  if (error) {
+    console.error("getClubs:", error.message);
+    return [];
+  }
+  return (data as ClubRow[]).map(mapClub);
 }
- 
-export const featuredClubs = clubs.filter((c) => c.isFeatured);
+
+export async function getClubsByCity(citySlug: string): Promise<Club[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("*")
+    .eq("status", "approved")
+    .eq("city_slug", citySlug)
+    .order("name");
+  if (error) {
+    console.error("getClubsByCity:", error.message);
+    return [];
+  }
+  return (data as ClubRow[]).map(mapClub);
+}
+
+export async function getClubsByCityAndCategory(citySlug: string, categorySlug: string): Promise<Club[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("*")
+    .eq("status", "approved")
+    .eq("city_slug", citySlug)
+    .eq("category_slug", categorySlug)
+    .order("name");
+  if (error) {
+    console.error("getClubsByCityAndCategory:", error.message);
+    return [];
+  }
+  return (data as ClubRow[]).map(mapClub);
+}
+
+export async function getClubBySlug(slug: string): Promise<Club | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .maybeSingle();
+  if (error || !data) return null;
+  return mapClub(data as ClubRow);
+}
+
+export async function getFeaturedClubs(): Promise<Club[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("*")
+    .eq("status", "approved")
+    .eq("is_featured", true)
+    .order("name");
+  if (error) {
+    console.error("getFeaturedClubs:", error.message);
+    return [];
+  }
+  return (data as ClubRow[]).map(mapClub);
+}
