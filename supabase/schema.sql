@@ -1,19 +1,32 @@
 -- =============================================================================
 -- Nepali Connect Germany — Supabase / PostgreSQL schema
--- Run with: supabase db push   (or paste into the SQL editor)
+--
+-- Run this once: Supabase Dashboard -> SQL Editor -> New query -> paste this
+-- whole file -> Run. Safe to re-run on a fresh project; it will error if the
+-- tables already exist (drop them first if you need to start over).
+--
+-- Scope: this covers exactly what the app renders today — cities,
+-- categories, clubs (sports clubs + cultural organizations + music groups,
+-- unified — see note below), restaurants, and events. Jobs, housing,
+-- lawyers, doctors, and universities were sketched in an earlier draft of
+-- this file but have no pages in the app yet, so they're left out until
+-- those are actually built — add them later following the same pattern.
 -- =============================================================================
 
-create extension if not exists "uuid-ossp";
-create extension if not exists "pgcrypto";
+create extension if not exists "pgcrypto"; -- gives us gen_random_uuid()
 
 create type moderation_status as enum ('pending', 'approved', 'rejected');
-create type housing_type as enum ('Room', 'Apartment', 'Temporary Accommodation');
-create type job_type as enum ('Full-time', 'Part-time', 'Internship', 'Working Student', 'Ausbildung');
-create type language as enum ('Nepali', 'English', 'German', 'Hindi');
-create type practice_area as enum ('Immigration', 'Civil', 'Criminal', 'Family', 'Corporate');
 
 -- ---------------------------------------------------------------------------
--- Cities
+-- Cities — reference data (~70 German cities seeded). Rarely changes; the
+-- Supabase Table Editor (Dashboard -> Table Editor -> cities) is the easiest
+-- way to tweak one, no custom admin form needed for this table.
+--
+-- community_count / business_count / event_count / member_count are
+-- editorial estimates shown on the homepage and map ("42 Communities" etc.),
+-- not a live count of rows below — Postgres already computes the real counts
+-- on demand via the Club/Restaurant/Event tables, so keep these as
+-- occasionally-updated marketing figures, edited by hand.
 -- ---------------------------------------------------------------------------
 create table cities (
   id uuid primary key default gen_random_uuid(),
@@ -24,121 +37,83 @@ create table cities (
   lng double precision not null,
   hero_image text,
   blurb text,
+  community_count int not null default 0,
+  business_count int not null default 0,
+  event_count int not null default 0,
+  member_count int not null default 0,
   is_featured boolean not null default false,
   created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
--- Categories (sports, community, services, food, life)
+-- Categories — cricket, football, cultural-organizations, music-groups, etc.
+-- Also reference data; manage via the Table Editor.
 -- ---------------------------------------------------------------------------
 create table categories (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   name text not null,
-  icon text not null,
-  "group" text not null,
+  icon text not null,          -- lucide-react icon name
+  category_group text not null, -- sports | community | food | life
   description text
 );
 
 -- ---------------------------------------------------------------------------
--- Users (mirrors Clerk user, kept in sync via webhook)
--- ---------------------------------------------------------------------------
-create table users (
-  id uuid primary key default gen_random_uuid(),
-  clerk_id text unique not null,
-  email text unique not null,
-  full_name text,
-  avatar_url text,
-  role text not null default 'member', -- member | business_owner | moderator | admin
-  city_id uuid references cities(id),
-  created_at timestamptz not null default now()
-);
-
--- ---------------------------------------------------------------------------
--- Sports clubs / community associations
+-- Clubs — sports clubs, cultural organizations, AND music groups all live in
+-- this one table. The app has always treated these as a single `Club` type
+-- distinguished by category_slug (see lib/types.ts), so this mirrors that
+-- instead of forcing a split the front-end doesn't use.
 -- ---------------------------------------------------------------------------
 create table clubs (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   name text not null,
-  city_id uuid not null references cities(id),
-  category_id uuid not null references categories(id),
-  owner_id uuid references users(id),
+  city_slug text not null references cities(slug),
+  category_slug text not null references categories(slug),
   logo text,
   cover_image text,
   description text,
-  social jsonb default '{}'::jsonb, -- { instagram, facebook, tiktok, whatsapp, website }
-  captain_name text,
-  phone text,
-  email text,
-  practice_location text,
-  practice_time text,
-  maps_url text,
-  member_count int not null default 0,
+  social jsonb not null default '{}'::jsonb, -- { instagram, facebook, tiktok, whatsapp, website }
+  phone text not null default '',
+  email text not null default '',
+  maps_url text not null default '',
   is_featured boolean not null default false,
   status moderation_status not null default 'pending',
+  -- Sports-club-specific (blank for cultural orgs / music groups):
+  captain_name text not null default '',
+  practice_location text not null default '',
+  practice_time text not null default '',
+  member_count int not null default 0,
+  -- Cultural-org / music-group-specific (blank for sports clubs):
+  contact_person text not null default '',
   created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
--- Communities (cultural orgs, student associations, religious orgs, etc.)
+-- Restaurants
 -- ---------------------------------------------------------------------------
-create table communities (
+create table restaurants (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   name text not null,
-  city_id uuid not null references cities(id),
-  category_id uuid not null references categories(id),
-  owner_id uuid references users(id),
+  city_slug text not null references cities(slug),
+  category text not null default 'Restaurant',
   logo text,
+  photos text[] not null default '{}',
   description text,
-  social jsonb default '{}'::jsonb,
-  contact_name text,
-  contact_email text,
-  status moderation_status not null default 'pending',
-  created_at timestamptz not null default now()
-);
-
--- ---------------------------------------------------------------------------
--- Businesses (consultants, financial services, general directory)
--- ---------------------------------------------------------------------------
-create table businesses (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  name text not null,
-  city_id uuid not null references cities(id),
-  owner_id uuid references users(id),
-  category text not null,
-  logo text,
-  description text,
-  opening_hours jsonb default '[]'::jsonb, -- [{ day, hours }]
-  address text,
-  maps_url text,
-  social jsonb default '{}'::jsonb,
-  phone text,
-  rating numeric(2,1) default 0,
+  opening_hours jsonb not null default '[]'::jsonb, -- [{ day, hours }]
+  address text not null default '',
+  maps_url text not null default '',
+  social jsonb not null default '{}'::jsonb,
+  phone text not null default '',
+  rating numeric(2,1) not null default 0,
   review_count int not null default 0,
   is_premium boolean not null default false,
   status moderation_status not null default 'pending',
+  cuisine text[] not null default '{}',
+  menu_highlights jsonb not null default '[]'::jsonb, -- [{ name, price, description }]
+  delivery jsonb not null default '[]'::jsonb,         -- [{ partner, url }]
   created_at timestamptz not null default now()
-);
-
--- ---------------------------------------------------------------------------
--- Restaurants (extends businesses 1:1)
--- ---------------------------------------------------------------------------
-create table restaurants (
-  business_id uuid primary key references businesses(id) on delete cascade,
-  cuisine text[] default '{}',
-  menu_highlights jsonb default '[]'::jsonb, -- [{ name, price, description }]
-  delivery jsonb default '[]'::jsonb -- [{ partner, url }]
-);
-
--- ---------------------------------------------------------------------------
--- Grocery stores (extends businesses 1:1)
--- ---------------------------------------------------------------------------
-create table grocery (
-  business_id uuid primary key references businesses(id) on delete cascade,
-  specialties text[] default '{}'
 );
 
 -- ---------------------------------------------------------------------------
@@ -148,203 +123,69 @@ create table events (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   title text not null,
-  city_id uuid not null references cities(id),
-  organizer text,
-  organizer_id uuid references users(id),
+  city_slug text not null references cities(slug),
+  organizer text not null default '',
   poster text,
-  location text,
-  maps_url text,
+  location text not null default '',
+  maps_url text not null default '',
   start_date date not null,
   end_date date,
   description text,
-  category text not null, -- festival | sports | cultural | networking | religious
-  festival_tag text,      -- Dashain | Tihar | Teej | Holi
-  price text,
-  register_url text,
+  category text not null default 'other', -- festival | sports | cultural | networking | religious | concert | other | offer
+  festival_tag text,                      -- Dashain | Tihar | Teej | Holi | Cricket | Football | Music | Volleyball | Offer | Other
+  price text not null default '',
+  register_url text not null default '',
   is_featured boolean not null default false,
   status moderation_status not null default 'pending',
   created_at timestamptz not null default now()
 );
 
--- ---------------------------------------------------------------------------
--- Jobs
--- ---------------------------------------------------------------------------
-create table jobs (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  title text not null,
-  company text not null,
-  city_id uuid not null references cities(id),
-  posted_by uuid references users(id),
-  salary text,
-  type job_type not null,
-  remote boolean not null default false,
-  description text,
-  requirements text[] default '{}',
-  posted_date date not null default current_date,
-  apply_url text,
-  is_promoted boolean not null default false,
-  status moderation_status not null default 'pending'
-);
-
--- ---------------------------------------------------------------------------
--- Housing
--- ---------------------------------------------------------------------------
-create table housing (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  title text not null,
-  city_id uuid not null references cities(id),
-  posted_by uuid references users(id),
-  type housing_type not null,
-  price numeric(8,2) not null,
-  size_sqm numeric(6,2),
-  available_from date,
-  photos text[] default '{}',
-  description text,
-  contact_name text,
-  contact_phone text,
-  is_promoted boolean not null default false,
-  status moderation_status not null default 'pending',
-  created_at timestamptz not null default now()
-);
-
--- ---------------------------------------------------------------------------
--- Lawyers
--- ---------------------------------------------------------------------------
-create table lawyers (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  name text not null,
-  city_id uuid not null references cities(id),
-  practice_areas practice_area[] not null default '{}',
-  languages language[] not null default '{}',
-  address text,
-  phone text,
-  maps_url text,
-  photo text,
-  status moderation_status not null default 'pending'
-);
-
--- ---------------------------------------------------------------------------
--- Doctors
--- ---------------------------------------------------------------------------
-create table doctors (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  name text not null,
-  city_id uuid not null references cities(id),
-  specialization text,
-  languages language[] not null default '{}',
-  address text,
-  phone text,
-  maps_url text,
-  appointment_url text,
-  photo text,
-  status moderation_status not null default 'pending'
-);
-
--- ---------------------------------------------------------------------------
--- Universities & student associations
--- ---------------------------------------------------------------------------
-create table universities (
-  id uuid primary key default gen_random_uuid(),
-  slug text unique not null,
-  name text not null,
-  city_id uuid not null references cities(id),
-  logo text,
-  student_association_name text,
-  student_association_contact text
-);
-
-create table student_associations (
-  id uuid primary key default gen_random_uuid(),
-  university_id uuid not null references universities(id) on delete cascade,
-  name text not null,
-  contact_email text,
-  instagram text,
-  facebook text
-);
-
--- ---------------------------------------------------------------------------
--- Media, reviews, favorites
--- ---------------------------------------------------------------------------
-create table photos (
-  id uuid primary key default gen_random_uuid(),
-  owner_type text not null, -- club | business | event | housing
-  owner_id uuid not null,
-  url text not null,
-  cloudinary_public_id text,
-  sort_order int not null default 0,
-  created_at timestamptz not null default now()
-);
-
-create table reviews (
-  id uuid primary key default gen_random_uuid(),
-  target_type text not null, -- business | restaurant | club
-  target_id uuid not null,
-  author_id uuid references users(id),
-  rating int not null check (rating between 1 and 5),
-  comment text,
-  created_at timestamptz not null default now()
-);
-
-create table favorites (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references users(id) on delete cascade,
-  target_type text not null, -- city | club | business | restaurant | event | job | housing
-  target_id uuid not null,
-  created_at timestamptz not null default now(),
-  unique (user_id, target_type, target_id)
-);
-
 -- =============================================================================
--- Indexes
+-- Indexes — matching how the app actually queries (by city, by city+category,
+-- by status, events sorted by date).
 -- =============================================================================
-create index idx_clubs_city on clubs (city_id);
-create index idx_clubs_category on clubs (category_id);
-create index idx_businesses_city on businesses (city_id);
-create index idx_events_city on events (city_id);
+create index idx_clubs_city on clubs (city_slug);
+create index idx_clubs_category on clubs (category_slug);
+create index idx_clubs_status on clubs (status);
+create index idx_restaurants_city on restaurants (city_slug);
+create index idx_restaurants_status on restaurants (status);
+create index idx_events_city on events (city_slug);
+create index idx_events_status on events (status);
 create index idx_events_start_date on events (start_date);
-create index idx_jobs_city on jobs (city_id);
-create index idx_housing_city on housing (city_id);
-create index idx_reviews_target on reviews (target_type, target_id);
-create index idx_favorites_user on favorites (user_id);
 
 -- =============================================================================
--- Row Level Security — public read of approved content, owner-only writes
+-- Row Level Security
+--
+-- There's no live user-login system wired up yet (Clerk is planned but not
+-- connected — see README), so this deliberately does NOT try to do
+-- per-owner RLS policies keyed off auth.uid(). Instead:
+--
+--   - The public site reads with the anon key. RLS below restricts it to
+--     "approved" rows only — a pending or rejected submission is invisible
+--     to everyone except the admin.
+--   - ALL writes (public submissions AND admin add/approve/reject) go
+--     through Next.js Server Actions using the service role key, which
+--     bypasses RLS entirely and never reaches the browser. That's why there
+--     are no insert/update/delete policies below for anon/authenticated —
+--     none are needed, and adding none is safer than adding loose ones.
+--
+-- If/when you wire up real accounts (Clerk or Supabase Auth) and want club
+-- owners to edit their own listing directly from the browser, that's the
+-- point to add owner_id columns + auth.uid()-based policies.
 -- =============================================================================
+alter table cities enable row level security;
+alter table categories enable row level security;
 alter table clubs enable row level security;
-alter table businesses enable row level security;
+alter table restaurants enable row level security;
 alter table events enable row level security;
-alter table jobs enable row level security;
-alter table housing enable row level security;
 
+create policy "Public can read cities" on cities
+  for select using (true);
+create policy "Public can read categories" on categories
+  for select using (true);
 create policy "Public can read approved clubs" on clubs
   for select using (status = 'approved');
-create policy "Owners can manage their own clubs" on clubs
-  for all using (auth.uid()::text = owner_id::text);
-
-create policy "Public can read approved businesses" on businesses
+create policy "Public can read approved restaurants" on restaurants
   for select using (status = 'approved');
-create policy "Owners can manage their own businesses" on businesses
-  for all using (auth.uid()::text = owner_id::text);
-
 create policy "Public can read approved events" on events
   for select using (status = 'approved');
-create policy "Organizers can manage their own events" on events
-  for all using (auth.uid()::text = organizer_id::text);
-
-create policy "Public can read approved jobs" on jobs
-  for select using (status = 'approved');
-create policy "Posters can manage their own jobs" on jobs
-  for all using (auth.uid()::text = posted_by::text);
-
-create policy "Public can read approved housing" on housing
-  for select using (status = 'approved');
-create policy "Posters can manage their own housing" on housing
-  for all using (auth.uid()::text = posted_by::text);
-
-alter table favorites enable row level security;
-create policy "Users manage their own favorites" on favorites
-  for all using (auth.uid()::text = user_id::text);
