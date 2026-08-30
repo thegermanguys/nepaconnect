@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: "Search",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function SearchPage({
   searchParams,
 }: {
@@ -17,7 +19,7 @@ export default async function SearchPage({
 }) {
   const { q, type } = await searchParams;
   const query = q ?? "";
-  const results = runSearch(query, type);
+  const results = await runSearch(query, type);
 
   return (
     <div className="container py-14">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { clubs } from "@/lib/data/clubs";
-import { cities } from "@/lib/data/cities";
-import { categories } from "@/lib/data/categories";
+import { getClubs } from "@/lib/data/clubs";
+import { getCities } from "@/lib/data/cities";
+import { getCategories } from "@/lib/data/categories";
 import { ClubCard } from "@/components/shared/club-card";
 import { Badge } from "@/components/ui/badge";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Cricket, football, and other sports clubs, plus cultural organizations and music groups across Germany.",
 };
 
-const clubCategories = categories.filter((c) => c.group === "sports" || c.group === "community");
+export const dynamic = "force-dynamic";
 
 export default async function ClubsPage({
   searchParams,
@@ -19,6 +19,8 @@ export default async function ClubsPage({
   searchParams: Promise<{ city?: string; category?: string }>;
 }) {
   const { city, category } = await searchParams;
+  const [clubs, cities, categories] = await Promise.all([getClubs(), getCities(), getCategories()]);
+  const clubCategories = categories.filter((c) => c.group === "sports" || c.group === "community");
 
   let filtered = clubs;
   if (city) filtered = filtered.filter((c) => c.citySlug === city);

@@ -2,24 +2,23 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { CalendarDays, MapPin, Ticket } from "lucide-react";
-import { events, getEventBySlug } from "@/lib/data/events";
+import { getEventBySlug } from "@/lib/data/events";
 import { getCityBySlug } from "@/lib/data/cities";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDateRange } from "@/lib/utils";
+import type { EventItem } from "@/lib/types";
 
-export function generateStaticParams() {
-  return events.map((e) => ({ slug: e.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const e = getEventBySlug(slug);
+  const e = await getEventBySlug(slug);
   if (!e) return {};
   return { title: e.title, description: e.description };
 }
 
-function buildCalendarUrl(event: NonNullable<ReturnType<typeof getEventBySlug>>) {
+function buildCalendarUrl(event: EventItem) {
   const start = event.startDate.replace(/-/g, "");
   const end = (event.endDate ?? event.startDate).replace(/-/g, "");
   const params = new URLSearchParams({
@@ -34,9 +33,9 @@ function buildCalendarUrl(event: NonNullable<ReturnType<typeof getEventBySlug>>)
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) notFound();
-  const city = getCityBySlug(event.citySlug);
+  const city = await getCityBySlug(event.citySlug);
 
   return (
     <div className="container py-14">

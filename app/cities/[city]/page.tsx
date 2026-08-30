@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Users, Building2, CalendarDays } from "lucide-react";
-import { cities, getCityBySlug } from "@/lib/data/cities";
+import { getCityBySlug } from "@/lib/data/cities";
 import { getClubsByCity } from "@/lib/data/clubs";
 import { getRestaurantsByCity } from "@/lib/data/restaurants";
 import { getEventsByCity } from "@/lib/data/events";
-import { sportsCategories, communityCategories } from "@/lib/data/categories";
+import { getSportsCategories, getCommunityCategories } from "@/lib/data/categories";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ClubCard } from "@/components/shared/club-card";
 import { BusinessCard } from "@/components/shared/business-card";
@@ -14,13 +14,13 @@ import { EventCard } from "@/components/shared/event-card";
 import { CategoryCard } from "@/components/shared/category-card";
 import { Badge } from "@/components/ui/badge";
 
-export function generateStaticParams() {
-  return cities.map((c) => ({ city: c.slug }));
-}
+// New cities/clubs/restaurants/events can appear at any time via the DB, so
+// this route always renders fresh rather than being statically generated.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const { city: citySlug } = await params;
-  const city = getCityBySlug(citySlug);
+  const city = await getCityBySlug(citySlug);
   if (!city) return {};
   return {
     title: `Nepalis in ${city.name}`,
@@ -30,12 +30,16 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
   const { city: citySlug } = await params;
-  const city = getCityBySlug(citySlug);
+  const city = await getCityBySlug(citySlug);
   if (!city) notFound();
 
-  const clubList = getClubsByCity(city.slug);
-  const restaurantList = getRestaurantsByCity(city.slug);
-  const eventList = getEventsByCity(city.slug);
+  const [clubList, restaurantList, eventList, sportsCategories, communityCategories] = await Promise.all([
+    getClubsByCity(city.slug),
+    getRestaurantsByCity(city.slug),
+    getEventsByCity(city.slug),
+    getSportsCategories(),
+    getCommunityCategories(),
+  ]);
 
   return (
     <div>

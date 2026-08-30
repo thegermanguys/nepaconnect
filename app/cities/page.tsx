@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { CityCard } from "@/components/shared/city-card";
-import { cities } from "@/lib/data/cities";
+import { getCities } from "@/lib/data/cities";
 
 export const metadata: Metadata = {
   title: "Cities",
   description: "Browse Nepali communities, businesses, and events across every major city in Germany.",
 };
 
-export default function CitiesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function CitiesPage() {
+  const cities = await getCities();
   return (
     <div className="container py-14">
       <div className="max-w-2xl">

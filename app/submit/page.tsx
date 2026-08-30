@@ -1,103 +1,48 @@
-"use client";
-
-import * as React from "react";
-import { CheckCircle2, ShieldCheck } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { CheckCircle2, AlertTriangle } from "lucide-react";
+import { getCities } from "@/lib/data/cities";
+import { getSportsCategories, getCommunityCategories } from "@/lib/data/categories";
+import { SubmitForm } from "@/components/submit/submit-form";
 import { Button } from "@/components/ui/button";
-import { cities } from "@/lib/data/cities";
 
-type FieldType = "text" | "email" | "tel" | "textarea" | "select-city" | "date" | "number";
-
-interface FieldConfig {
-  name: string;
-  label: string;
-  type: FieldType;
-  placeholder?: string;
-  required?: boolean;
-}
-
-const CATEGORY_FORMS: Record<string, { label: string; fields: FieldConfig[] }> = {
-  "sports-club": {
-    label: "Sports Club",
-    fields: [
-      { name: "name", label: "Club name", type: "text", required: true },
-      { name: "city", label: "City", type: "select-city", required: true },
-      { name: "sport", label: "Sport", type: "text", placeholder: "Cricket, Football…", required: true },
-      { name: "captain", label: "Captain name", type: "text", required: true },
-      { name: "phone", label: "Phone", type: "tel", required: true },
-      { name: "email", label: "Email", type: "email", required: true },
-      { name: "practiceLocation", label: "Practice location", type: "text" },
-      { name: "description", label: "Description", type: "textarea", required: true },
-    ],
-  },
-  restaurant: {
-    label: "Restaurant",
-    fields: [
-      { name: "name", label: "Restaurant name", type: "text", required: true },
-      { name: "city", label: "City", type: "select-city", required: true },
-      { name: "cuisine", label: "Cuisine", type: "text", placeholder: "Nepali, Tibetan…" },
-      { name: "address", label: "Address", type: "text", required: true },
-      { name: "phone", label: "Phone", type: "tel", required: true },
-      { name: "description", label: "Description", type: "textarea", required: true },
-    ],
-  },
-  association: {
-    label: "Cultural / Music Group",
-    fields: [
-      { name: "name", label: "Group name", type: "text", required: true },
-      { name: "city", label: "City", type: "select-city", required: true },
-      { name: "focus", label: "Focus area", type: "text", placeholder: "Cultural organization, music group…" },
-      { name: "contactName", label: "Contact name", type: "text", required: true },
-      { name: "email", label: "Email", type: "email", required: true },
-      { name: "description", label: "Description", type: "textarea", required: true },
-    ],
-  },
-  event: {
-    label: "Event",
-    fields: [
-      { name: "title", label: "Event title", type: "text", required: true },
-      { name: "city", label: "City", type: "select-city", required: true },
-      { name: "organizer", label: "Organizer", type: "text", required: true },
-      { name: "date", label: "Date", type: "date", required: true },
-      { name: "location", label: "Location", type: "text", required: true },
-      { name: "description", label: "Description", type: "textarea", required: true },
-    ],
-  },
+export const metadata: Metadata = {
+  title: "Submit Your Community",
+  description: "Add your sports club, restaurant, cultural or music group, or event listing to Nepali Connect Germany.",
 };
 
-export default function SubmitPage() {
-  const [category, setCategory] = React.useState("sports-club");
-  const [submitted, setSubmitted] = React.useState(false);
+export const dynamic = "force-dynamic";
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    // In production this posts to Supabase with status="pending" for moderation.
-    setSubmitted(true);
-  }
+export default async function SubmitPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ submitted?: string; error?: string }>;
+}) {
+  const { submitted, error } = await searchParams;
 
-  if (submitted) {
+  if (submitted === "1") {
     return (
       <div className="container flex flex-col items-center py-24 text-center">
         <span className="flex h-16 w-16 items-center justify-center rounded-full bg-pine/10 text-pine">
           <CheckCircle2 className="h-8 w-8" />
         </span>
-        <h1 className="mt-6 font-display text-3xl font-semibold">Thanks — it's in review</h1>
+        <h1 className="mt-6 font-display text-3xl font-semibold">Thanks — it&apos;s in review</h1>
         <p className="mt-3 max-w-md text-muted-foreground">
           Our moderation team checks every submission before it goes live, usually within 48 hours.
-          We'll email you once it's published.
+          We&apos;ll email you once it&apos;s published.
         </p>
-        <Button className="mt-8" onClick={() => setSubmitted(false)}>
-          Submit another listing
+        <Button className="mt-8" asChild>
+          <Link href="/submit">Submit another listing</Link>
         </Button>
       </div>
     );
   }
 
-  const config = CATEGORY_FORMS[category];
+  const [cities, sportsCategories, communityCategories] = await Promise.all([
+    getCities(),
+    getSportsCategories(),
+    getCommunityCategories(),
+  ]);
 
   return (
     <div className="container max-w-3xl py-14">
@@ -112,51 +57,14 @@ export default function SubmitPage() {
         </p>
       </div>
 
-      <Tabs value={category} onValueChange={setCategory} className="mt-8">
-        <TabsList className="flex-wrap h-auto gap-y-2">
-          {Object.entries(CATEGORY_FORMS).map(([key, val]) => (
-            <TabsTrigger key={key} value={key}>{val.label}</TabsTrigger>
-          ))}
-        </TabsList>
+      {error && (
+        <div className="mt-6 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          Something went wrong submitting that: {error}. Please try again.
+        </div>
+      )}
 
-        <TabsContent value={category}>
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 rounded-2xl border border-border bg-surface p-6 shadow-soft sm:grid-cols-2 sm:p-8">
-            {config.fields.map((field) => (
-              <div key={field.name} className={field.type === "textarea" ? "sm:col-span-2 space-y-2" : "space-y-2"}>
-                <Label htmlFor={field.name}>
-                  {field.label} {field.required && <span className="text-primary">*</span>}
-                </Label>
-                {field.type === "textarea" ? (
-                  <Textarea id={field.name} required={field.required} placeholder={field.placeholder} rows={4} />
-                ) : field.type === "select-city" ? (
-                  <Select id={field.name} required={field.required} defaultValue="">
-                    <option value="" disabled>Select a city</option>
-                    {cities.map((c) => (
-                      <option key={c.slug} value={c.slug}>{c.name}</option>
-                    ))}
-                  </Select>
-                ) : (
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    required={field.required}
-                    placeholder={field.placeholder}
-                  />
-                )}
-              </div>
-            ))}
-
-            <div className="sm:col-span-2 flex items-start gap-2 rounded-xl bg-surface-2 p-4 text-sm text-muted-foreground">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-pine" />
-              Your submission is sent to our moderation queue and reviewed before it appears publicly.
-            </div>
-
-            <Button type="submit" size="lg" className="sm:col-span-2">
-              Submit for Review
-            </Button>
-          </form>
-        </TabsContent>
-      </Tabs>
+      <SubmitForm cities={cities} sportsCategories={sportsCategories} communityCategories={communityCategories} />
     </div>
   );
 }

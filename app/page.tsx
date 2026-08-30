@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: "The Home of Nepalese in Germany",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   return (
     <>

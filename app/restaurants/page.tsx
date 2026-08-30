@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { restaurants } from "@/lib/data/restaurants";
+import { getRestaurants } from "@/lib/data/restaurants";
 import { BusinessCard } from "@/components/shared/business-card";
-import { cities } from "@/lib/data/cities";
+import { getCities } from "@/lib/data/cities";
 
 export const metadata: Metadata = {
   title: "Nepali Restaurants",
   description: "Momos, dal bhat, and thakali kitchens across Germany.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RestaurantsPage({ searchParams }: { searchParams: Promise<{ city?: string }> }) {
   const { city } = await searchParams;
+  const [restaurants, cities] = await Promise.all([getRestaurants(), getCities()]);
   const filtered = city ? restaurants.filter((r) => r.citySlug === city) : restaurants;
   const cityName = cities.find((c) => c.slug === city)?.name;
 

@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { cities, getCityBySlug } from "@/lib/data/cities";
-import { categories, getCategoryBySlug } from "@/lib/data/categories";
+import { getCityBySlug } from "@/lib/data/cities";
+import { getCategoryBySlug } from "@/lib/data/categories";
 import { getClubsByCityAndCategory } from "@/lib/data/clubs";
 import { ClubCard } from "@/components/shared/club-card";
 import { Button } from "@/components/ui/button";
 
-export function generateStaticParams() {
-  return cities.flatMap((city) =>
-    categories
-      .filter((c) => c.group === "sports" || c.group === "community")
-      .map((cat) => ({ city: city.slug, category: cat.slug }))
-  );
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -22,8 +16,7 @@ export async function generateMetadata({
   params: Promise<{ city: string; category: string }>;
 }): Promise<Metadata> {
   const { city: citySlug, category: categorySlug } = await params;
-  const city = getCityBySlug(citySlug);
-  const category = getCategoryBySlug(categorySlug);
+  const [city, category] = await Promise.all([getCityBySlug(citySlug), getCategoryBySlug(categorySlug)]);
   if (!city || !category) return {};
   const entityLabel = category.group === "community" ? "Groups" : "Clubs";
   return { title: `${category.name} ${entityLabel} in ${city.name}` };
@@ -35,11 +28,10 @@ export default async function CityCategoryPage({
   params: Promise<{ city: string; category: string }>;
 }) {
   const { city: citySlug, category: categorySlug } = await params;
-  const city = getCityBySlug(citySlug);
-  const category = getCategoryBySlug(categorySlug);
+  const [city, category] = await Promise.all([getCityBySlug(citySlug), getCategoryBySlug(categorySlug)]);
   if (!city || !category) notFound();
 
-  const clubList = getClubsByCityAndCategory(city.slug, category.slug);
+  const clubList = await getClubsByCityAndCategory(city.slug, category.slug);
   const entityLabel = category.group === "community" ? "Groups" : "Clubs";
 
   return (

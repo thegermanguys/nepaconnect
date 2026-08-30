@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { events, getUpcomingEvents, getPastEvents } from "@/lib/data/events";
+import { getEvents, getUpcomingEvents, getPastEvents } from "@/lib/data/events";
 import { EventCard } from "@/components/shared/event-card";
-import { cities } from "@/lib/data/cities";
+import { getCities } from "@/lib/data/cities";
 
 export const metadata: Metadata = {
   title: "Events",
   description: "Festivals, tournaments, Concerts and meetups happening across Germany.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function EventsPage({ searchParams }: { searchParams: Promise<{ city?: string }> }) {
   const { city } = await searchParams;
+  const [events, cities] = await Promise.all([getEvents(), getCities()]);
   const filtered = city ? events.filter((e) => e.citySlug === city) : events;
   const upcoming = getUpcomingEvents(filtered);
   const past = getPastEvents(filtered);

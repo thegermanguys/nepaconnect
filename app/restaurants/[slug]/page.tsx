@@ -2,25 +2,23 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Phone, MapPin, Star, Instagram, Clock, Truck } from "lucide-react";
-import { restaurants, getRestaurantBySlug } from "@/lib/data/restaurants";
+import { getRestaurantBySlug } from "@/lib/data/restaurants";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-export function generateStaticParams() {
-  return restaurants.map((r) => ({ slug: r.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const r = getRestaurantBySlug(slug);
+  const r = await getRestaurantBySlug(slug);
   if (!r) return {};
   return { title: r.name, description: r.description };
 }
 
 export default async function RestaurantDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const restaurant = getRestaurantBySlug(slug);
+  const restaurant = await getRestaurantBySlug(slug);
   if (!restaurant) notFound();
 
   return (
