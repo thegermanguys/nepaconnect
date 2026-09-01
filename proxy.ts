@@ -1,11 +1,10 @@
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { ADMIN_COOKIE_NAME, adminSessionToken } from "@/lib/admin/hash";
 
-// Interim protection for /admin until real accounts (Clerk, per README) are
-// wired up. Everything under /admin except the login page itself requires a
-// session cookie matching the hash of ADMIN_PASSWORD (see .env.example).
-export async function middleware(request: NextRequest) {
+// Clerk now runs on every request (for real user sessions), while /admin keeps
+// its own separate password-based gate, unchanged from before.
+export default clerkMiddleware(async (_auth, request) => {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
@@ -20,8 +19,11 @@ export async function middleware(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/((?!_next|.*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico)).*)",
+    "/(api|trpc)(.*)",
+  ],
 };
