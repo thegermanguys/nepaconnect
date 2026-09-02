@@ -1,7 +1,8 @@
 import { StatCard } from "@/components/shared/stat-card";
-import { platformStats } from "@/lib/data/cities";
+import { getPlatformStats } from "@/lib/data/cities";
 
-export function StatsSection() {
+export async function StatsSection() {
+  const platformStats = await getPlatformStats();
   const items = [
     { value: `${platformStats.cities}+`, label: "Cities" },
     { value: `${platformStats.communities}+`, label: "Communities" },

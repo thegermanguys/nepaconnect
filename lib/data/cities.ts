@@ -74,10 +74,49 @@ export async function getFeaturedCities(): Promise<City[]> {
 // Homepage marketing banner ("120+ Cities", "600+ Communities", …). These are
 // deliberately round, aspirational figures rather than a live COUNT(*) of the
 // tables above — bump them by hand as the community actually grows.
-export const platformStats = {
-  cities: 120,
-  communities: 600,
-  sportsClubs: 250,
-  restaurants: 100,
-  members: 5000,
-};
+export interface PlatformStats {
+  cities: number;
+  communities: number;
+  sportsClubs: number;
+  restaurants: number;
+  members: number;
+}
+
+// Homepage marketing banner ("N+ Cities", "N+ Communities", …). Live counts
+// pulled from Supabase — only approved listings count, and "members" is the
+// sum of each approved club's member_count.
+export async function getPlatformStats(): Promise<PlatformStats> {
+  const supabase = await createClient();
+
+  const [
+    { count: cities },
+    { count: communities },
+    { count: sportsClubs },
+    { count: restaurants },
+    { data: clubMembers },
+  ] = await Promise.all([
+    supabase.from("cities").select("*", { count: "exact", head: true }),
+    supabase
+      .from("clubs")
+      .select("id, categories!inner(category_group)", { count: "exact", head: true })
+      .eq("status", "approved")
+      .eq("categories.category_group", "community"),
+    supabase
+      .from("clubs")
+      .select("id, categories!inner(category_group)", { count: "exact", head: true })
+      .eq("status", "approved")
+      .eq("categories.category_group", "sports"),
+    supabase.from("restaurants").select("*", { count: "exact", head: true }).eq("status", "approved"),
+    supabase.from("clubs").select("member_count").eq("status", "approved"),
+  ]);
+
+  const members = (clubMembers ?? []).reduce((sum, row) => sum + (row.member_count ?? 0), 0);
+
+  return {
+    cities: cities ?? 0,
+    communities: communities ?? 0,
+    sportsClubs: sportsClubs ?? 0,
+    restaurants: restaurants ?? 0,
+    members,
+  };
+}
