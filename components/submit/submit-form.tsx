@@ -135,6 +135,9 @@ export function SubmitForm({
           className="grid grid-cols-1 gap-5 rounded-2xl border border-border bg-surface p-6 shadow-soft sm:grid-cols-2 sm:p-8"
         >
           <input type="hidden" name="_form" value={category} />
+          <p className="text-xs text-muted-foreground sm:col-span-2">
+            Fields marked <span className="text-primary">*</span> are required.
+          </p>
           {config.fields.map((field) => (
             <div key={field.name} className={field.type === "textarea" ? "sm:col-span-2 space-y-2" : "space-y-2"}>
               <Label htmlFor={field.name}>

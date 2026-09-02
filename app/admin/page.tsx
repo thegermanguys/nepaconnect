@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { getCities } from "@/lib/data/cities";
 import { getCategories } from "@/lib/data/categories";
 import { getAllClubsAdmin, getAllRestaurantsAdmin, getAllEventsAdmin, getPendingQueueAdmin } from "@/lib/admin/queries";
@@ -151,6 +152,7 @@ export default async function AdminPage({
             </summary>
             <div className="border-t border-border p-6">
               <form action={createClubAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <p className="text-xs text-muted-foreground sm:col-span-2">Fields marked <span className="text-destructive">*</span> are required.</p>
                 <Field label="Name" name="name" required />
                 <Field label="Slug (optional — auto-generated from name)" name="slug" />
                 <SelectField label="City" name="citySlug" required options={cityOptions} />
@@ -162,8 +164,8 @@ export default async function AdminPage({
                 />
                 <Field label="Phone" name="phone" />
                 <Field label="Email" name="email" type="email" />
-                <Field label="Logo image URL" name="logo" />
-                <Field label="Cover image URL" name="coverImage" />
+                <ImageUploadField label="Logo" name="logo" folder="nepaconnect/clubs/logos" />
+                <ImageUploadField label="Cover image" name="coverImage" folder="nepaconnect/clubs/covers" />
                 <Field label="Maps URL" name="mapsUrl" />
                 <Field label="Captain name (sports clubs)" name="captainName" />
                 <Field label="Practice location (sports clubs)" name="practiceLocation" />
@@ -197,6 +199,7 @@ export default async function AdminPage({
             </summary>
             <div className="border-t border-border p-6">
               <form action={createRestaurantAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <p className="text-xs text-muted-foreground sm:col-span-2">Fields marked <span className="text-destructive">*</span> are required.</p>
                 <Field label="Name" name="name" required />
                 <Field label="Slug (optional — auto-generated from name)" name="slug" />
                 <SelectField label="City" name="citySlug" required options={cityOptions} />
@@ -204,8 +207,14 @@ export default async function AdminPage({
                 <Field label="Address" name="address" />
                 <Field label="Phone" name="phone" />
                 <Field label="Maps URL" name="mapsUrl" />
-                <Field label="Logo image URL" name="logo" />
-                <Field label="Photo URLs (comma-separated)" name="photos" className="sm:col-span-2" />
+                <ImageUploadField label="Logo" name="logo" folder="nepaconnect/restaurants/logos" />
+                <ImageUploadField
+                  label="Photos"
+                  name="photos"
+                  folder="nepaconnect/restaurants/photos"
+                  multiple
+                  className="sm:col-span-2"
+                />
                 <Field label="Cuisine tags (comma-separated)" name="cuisine" placeholder="Nepali, Tibetan" />
                 <Field label="Rating (0–5)" name="rating" type="number" />
                 <Field label="Review count" name="reviewCount" type="number" />
@@ -239,6 +248,7 @@ export default async function AdminPage({
             </summary>
             <div className="border-t border-border p-6">
               <form action={createEventAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <p className="text-xs text-muted-foreground sm:col-span-2">Fields marked <span className="text-destructive">*</span> are required.</p>
                 <Field label="Title" name="title" required />
                 <Field label="Slug (optional — auto-generated from title)" name="slug" />
                 <SelectField label="City" name="citySlug" required options={cityOptions} />
@@ -249,7 +259,7 @@ export default async function AdminPage({
                 />
                 <Field label="Festival tag (optional)" name="festivalTag" placeholder="Dashain, Tihar, Teej, Holi…" />
                 <Field label="Organizer" name="organizer" />
-                <Field label="Poster image URL" name="poster" />
+                <ImageUploadField label="Poster" name="poster" folder="nepaconnect/events/posters" />
                 <Field label="Location" name="location" />
                 <Field label="Maps URL" name="mapsUrl" />
                 <Field label="Start date" name="startDate" type="date" required />
@@ -315,6 +325,10 @@ function AdminTable({ columns, rows }: { columns: string[]; rows: (string | numb
 
 // --- Small server-rendered form field helpers (no client JS needed) --------
 
+function RequiredMark() {
+  return <span className="ml-0.5 text-destructive">*</span>;
+}
+
 function Field({
   label,
   name,
@@ -332,7 +346,10 @@ function Field({
 }) {
   return (
     <div className={`space-y-1.5 ${className ?? ""}`}>
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name}>
+        {label}
+        {required && <RequiredMark />}
+      </Label>
       <Input id={name} name={name} type={type} required={required} placeholder={placeholder} />
     </div>
   );
@@ -362,7 +379,10 @@ function SelectField({
 }) {
   return (
     <div className={`space-y-1.5 ${className ?? ""}`}>
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name}>
+        {label}
+        {required && <RequiredMark />}
+      </Label>
       <Select id={name} name={name} required={required} defaultValue="">
         <option value="" disabled>Select…</option>
         {options.map((opt) => (
