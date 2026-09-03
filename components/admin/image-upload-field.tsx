@@ -12,10 +12,16 @@ interface ImageUploadFieldProps {
   folder: string;
   multiple?: boolean;
   className?: string;
+  /** Which server action to call for a signature. Defaults to the admin-gated one. */
+  signAction?: (folder: string) => Promise<{ cloudName: string; apiKey: string; timestamp: number; signature: string }>;
 }
 
-async function uploadOne(file: File, folder: string): Promise<string> {
-  const { cloudName, apiKey, timestamp, signature } = await getCloudinarySignature(folder);
+async function uploadOne(
+  file: File,
+  folder: string,
+  signAction: (folder: string) => Promise<{ cloudName: string; apiKey: string; timestamp: number; signature: string }>
+): Promise<string> {
+  const { cloudName, apiKey, timestamp, signature } = await signAction(folder);
 
   const form = new FormData();
   form.append("file", file);
@@ -45,7 +51,14 @@ async function uploadOne(file: File, folder: string): Promise<string> {
  * With `multiple`, uploaded URLs are joined with commas — matching the
  * existing "Photo URLs (comma-separated)" field format.
  */
-export function ImageUploadField({ label, name, folder, multiple, className }: ImageUploadFieldProps) {
+export function ImageUploadField({
+  label,
+  name,
+  folder,
+  multiple,
+  className,
+  signAction = getCloudinarySignature,
+}: ImageUploadFieldProps) {
   const [urls, setUrls] = React.useState<string[]>([]);
   const [uploading, setUploading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -57,7 +70,7 @@ export function ImageUploadField({ label, name, folder, multiple, className }: I
     setError(null);
     try {
       const fileArray = Array.from(files);
-      const uploaded = await Promise.all(fileArray.map((file) => uploadOne(file, folder)));
+      const uploaded = await Promise.all(fileArray.map((file) => uploadOne(file, folder, signAction)));
       setUrls((prev) => (multiple ? [...prev, ...uploaded] : uploaded));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");

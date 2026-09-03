@@ -31,3 +31,28 @@ export async function getCloudinarySignature(folder: string) {
 
   return { cloudName, apiKey, timestamp, signature, folder };
 }
+
+// Public counterpart for the /submit form — visitors aren't logged in as
+// admin, so this has no auth gate. To limit abuse (anyone could call this
+// repeatedly from dev tools without ever submitting the real form), the
+// destination folder is fixed server-side rather than accepted from the
+// client, so at minimum any junk uploads land in one place, not scattered
+// across the whole account.
+export async function getPublicSubmissionUploadSignature() {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error(
+      "Cloudinary is not configured — set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET."
+    );
+  }
+
+  const folder = "nepaconnect/submissions/pending";
+  const timestamp = Math.round(Date.now() / 1000);
+  const paramsToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+  const signature = crypto.createHash("sha1").update(paramsToSign).digest("hex");
+
+  return { cloudName, apiKey, timestamp, signature, folder };
+}

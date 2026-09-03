@@ -21,6 +21,15 @@ function uniqueSuffix(): string {
   return Math.random().toString(36).slice(2, 8);
 }
 
+function socialFromForm(formData: FormData) {
+  const social: Record<string, string> = {};
+  for (const key of ["instagram", "facebook", "whatsapp", "website"]) {
+    const v = str(formData, key);
+    if (v) social[key] = v;
+  }
+  return social;
+}
+
 export async function submitListingAction(formData: FormData) {
   const formType = str(formData, "_form");
   const supabase = createAdminClient();
@@ -41,6 +50,12 @@ export async function submitListingAction(formData: FormData) {
         captain_name: formType === "sports-club" ? str(formData, "captain") : "",
         practice_location: formType === "sports-club" ? str(formData, "practiceLocation") : "",
         contact_person: formType === "association" ? str(formData, "contactName") : "",
+        logo: str(formData, "logo") || null,
+        cover_image: str(formData, "coverImage") || null,
+        maps_url: str(formData, "mapsUrl"),
+        practice_time: formType === "sports-club" ? str(formData, "practiceTime") : "",
+        member_count: formType === "sports-club" ? Number(str(formData, "memberCount")) || 0 : 0,
+        social: socialFromForm(formData),
         status: "pending" as const,
       };
       const { error } = await supabase.from("clubs").insert(row);
@@ -48,6 +63,7 @@ export async function submitListingAction(formData: FormData) {
     } else if (formType === "restaurant") {
       const name = str(formData, "name");
       const cuisineRaw = str(formData, "cuisine");
+      const photosRaw = str(formData, "photos");
       const row = {
         slug: `${slugify(name)}-${uniqueSuffix()}`,
         name,
@@ -56,6 +72,10 @@ export async function submitListingAction(formData: FormData) {
         address: str(formData, "address"),
         phone: str(formData, "phone"),
         cuisine: cuisineRaw ? cuisineRaw.split(",").map((s) => s.trim()).filter(Boolean) : [],
+        logo: str(formData, "logo") || null,
+        photos: photosRaw ? photosRaw.split(",").map((s) => s.trim()).filter(Boolean) : [],
+        maps_url: str(formData, "mapsUrl"),
+        social: socialFromForm(formData),
         status: "pending" as const,
       };
       const { error } = await supabase.from("restaurants").insert(row);
@@ -68,9 +88,15 @@ export async function submitListingAction(formData: FormData) {
         city_slug: str(formData, "city"),
         organizer: str(formData, "organizer"),
         start_date: str(formData, "date"),
+        end_date: str(formData, "endDate") || null,
         location: str(formData, "location"),
+        maps_url: str(formData, "mapsUrl"),
+        festival_tag: str(formData, "festivalTag") || null,
+        price: str(formData, "price"),
+        register_url: str(formData, "registerUrl"),
         description: str(formData, "description"),
         category: str(formData, "category") || "other",
+        poster: str(formData, "poster") || null,
         status: "pending" as const,
       };
       const { error } = await supabase.from("events").insert(row);
