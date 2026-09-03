@@ -56,9 +56,9 @@ export function Navbar() {
               </Link>
             </Button>
             <ThemeToggle />
-            <Button variant="outline" size="sm" className="hidden md:inline-flex" asChild>
-              <Link href="/sign-in">Sign in</Link>
-            </Button>
+            {/* Sign-in hidden for now — no account-linked features exist yet
+                (dashboard is still a placeholder). Re-add once real user
+                profiles/favorites are built. Clerk itself stays wired up. */}
             <Button size="sm" className="hidden md:inline-flex" asChild>
               <Link href="/submit">Submit Your Community</Link>
             </Button>
@@ -89,9 +89,6 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-2 flex gap-2 px-4">
-              <Button variant="outline" size="sm" className="flex-1" asChild>
-                <Link href="/sign-in">Sign in</Link>
-              </Button>
               <Button size="sm" className="flex-1" asChild>
                 <Link href="/submit">Submit</Link>
               </Button>

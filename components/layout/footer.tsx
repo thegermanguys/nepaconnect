@@ -23,7 +23,6 @@ const columns = [
     title: "Community",
     links: [
       { href: "/submit", label: "Submit Your Community" },
-      { href: "/dashboard", label: "Club & Business Dashboard" },
       { href: "/admin", label: "Admin" },
     ],
   },
